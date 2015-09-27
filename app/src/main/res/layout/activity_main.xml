@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+
+
+
+
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:background="@drawable/wallpaper"
+    android:orientation="vertical"
+    android:weightSum="8"
+    tools:context=".MainActivity"	>
+
+
+
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/baseballreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+    <Button
+        android:id="@+id/button2"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/footballreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+
+
+    <Button
+        android:id="@+id/button3"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/hockeyreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+    <Button
+        android:id="@+id/button4"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/basketballreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+
+
+    <Button
+        android:id="@+id/button5"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/collegefootballreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+    <Button
+        android:id="@+id/button6"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/collegebasketballreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+    <Button
+        android:id="@+id/button7"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/olympicsreftitlebar"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_margin="5dp" />
+
+
+
+    <TextView
+        android:id="@+id/swipe_instructions"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/swipe_instructions"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|fill_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+
+</LinearLayout>

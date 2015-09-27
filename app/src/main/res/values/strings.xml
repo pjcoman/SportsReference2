@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="action_settings">settings</string>
+    <string name="app_name">Sports Reference</string>
+    <string name="hint">enter text to search</string>
+    <string name="clear">X</string>
+    <string name="swipe_instructions">swipe screen to switch sports and touch above search box to close keyboard</string>
+    <string name="close">CLOSE</string>
+
+
+</resources>
