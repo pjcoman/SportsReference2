@@ -3,7 +3,7 @@ package comapps.com.sportsreference2;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +31,8 @@ import java.util.List;
 public class MLBsearch extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private static final String LOGTAG="SPORTSREF2";
+
+    Context context = this;
 
     private AutoCompleteTextView textView;
 
@@ -65,60 +62,25 @@ public class MLBsearch extends AppCompatActivity implements GestureDetector.OnGe
         this.gestureDetector = new GestureDetectorCompat(this, this);
         gestureDetector.setOnDoubleTapListener(this);
 
-        AssetManager assetManager = getAssets();
 
-        try {
-            // for assets folder add empty string
-            String[] filelist = assetManager.list("");
-            // for assets/subFolderInAssets add only subfolder name
-            String[] filelistInSubfolder = assetManager.list("subFolderInAssets");
-            if (filelist == null) {
-                // dir does not exist or is not a directory
-            } else {
-                for (String filename : filelist) {
-                    // Get filename of file or directory
-                    Log.i(LOGTAG, filename);
-                }
-            }
-
-            // if(filelistInSubfolder == null) ............
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        String jsonBaseballLinks = null;
-        try {
-            jsonBaseballLinks = converJsonToStringFromAssetFolder(getApplicationContext());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        JSONArray array = null;
-        try {
-            array = new JSONArray(jsonBaseballLinks);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         final List<String> names = new ArrayList<>();
         final List<String> links = new ArrayList<>();
-        int i;
 
-        for (i = 0; i < array.length(); i++)
-            try {
-                names.add(array.getJSONObject(i).getString("name"));
-                links.add(array.getJSONObject(i).getString("link"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+
+        LinksDatabase LinksDB = new LinksDatabase(context);
+        Cursor CR = LinksDB.getInformation(LinksDB, "baseball_links");
+        CR.moveToFirst();
+
+        do {
+
+            if ( CR.getString(0) != "" ) {
+
+                names.add(CR.getString(0));
+                links.add(CR.getString(1));
             }
 
-
-    //    Resources res = getResources();
-    //    String[] names = res.getStringArray(R.array.mlb_suggestions);
-
+        } while( CR.moveToNext() );
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -166,11 +128,6 @@ public class MLBsearch extends AppCompatActivity implements GestureDetector.OnGe
                         String linkToPass = links.get(matchIndex);
                         Log.d("Link to pass ", linkToPass);
 
-                    //    Intent intentsuggestion = new Intent(
-                    //            Intent.ACTION_VIEW, Uri
-                    //            .parse(links.get(selectionindex)));
-                    //    startActivity(intentsuggestion);
-                    //    edittext1.setText(null);
 
                         Intent intent = new Intent(arg1.getContext(), WebView.class);
                         intent.putExtra("link", linkToPass);
@@ -386,15 +343,7 @@ public class MLBsearch extends AppCompatActivity implements GestureDetector.OnGe
         return super.onOptionsItemSelected(item);
     }
 
-    private static String converJsonToStringFromAssetFolder(Context context) throws IOException {
-        AssetManager manager = context.getAssets();
-        InputStream file = manager.open("baseball_links.json");
 
-        byte[] data = new byte[file.available()];
-        file.read(data);
-        file.close();
-        return new String(data);
-    }
 
 
 

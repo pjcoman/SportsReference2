@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+
+
+
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="5dp"
+    android:background="@drawable/wallpaper"
+    android:orientation="vertical"
+    android:weightSum="7"
+    tools:context=".MainActivity"	>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="2"
+        android:layout_weight="2"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+    <comapps.com.sportsreference2.CustomImageView
+        android:id="@+id/button1"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/baseballreftitlebar"
+        />
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button2"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/footballreftitlebar"
+            />
+</LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="10dp"
+        android:weightSum="2"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button3"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/hockeyreftitlebar"
+            />
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button4"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/basketballreftitlebar"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="10dp"
+        android:weightSum="3"
+        >
+
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button5"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/collegefootballreftitlebar"
+            />
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button6"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/collegebasketballreftitlebar"
+            />
+
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button7"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/olympicsreftitlebar"
+            />
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/swipe_instructions"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/swipe_instructions"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|fill_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+
+</LinearLayout>

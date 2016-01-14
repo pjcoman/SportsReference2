@@ -38,19 +38,19 @@ public class WebView extends AppCompatActivity {
 
         switch (sendingActivity) {
             case "baseball":
-                layout.setBackgroundResource(R.drawable.baseballbk); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_bb); break;
             case "hockey":
-                layout.setBackgroundResource(R.drawable.wallpaperhockey); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_h); break;
             case "football":
-                layout.setBackgroundResource(R.drawable.footballbk); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_fb); break;
             case "basketball":
-                layout.setBackgroundResource(R.drawable.wallpaperbasketball); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_basketb); break;
             case "cbb":
-                layout.setBackgroundResource(R.drawable.wallpapercollegebasketball); break;
+                layout.setBackgroundResource(R.drawable.walpaper_cbb); break;
             case "cfb":
-                layout.setBackgroundResource(R.drawable.cfootballbk5); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_cfb); break;
             case "oly":
-                layout.setBackgroundResource(R.drawable.olympicsbk2); break;
+                layout.setBackgroundResource(R.drawable.wallpaper_o); break;
 
 
             default:

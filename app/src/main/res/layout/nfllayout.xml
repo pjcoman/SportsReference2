@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/footballbk"
+    android:background="@drawable/wallpaper_fb"
     android:focusableInTouchMode="false"
     android:id="@+id/relativelayoutfb">
 
@@ -28,13 +28,14 @@
         android:background="@drawable/back"
         android:textColor="@android:color/white"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="50dp"
-        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="false"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical|center_horizontal"
         android:textColorHint="@android:color/white"
         android:cursorVisible="true"
-        android:layout_below="@+id/imageView2" />
+        android:layout_below="@+id/imageView2"
+        android:layout_toRightOf="@+id/clearsearchtext"/>
 
     <Button
         android:id="@+id/clearsearchtext"
@@ -42,11 +43,12 @@
 
         android:textSize="30sp"
         android:layout_width="40dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentRight="false"
         android:background="@drawable/clearx"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentEnd="false"
         android:layout_below="@+id/imageView2"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:layout_alignParentLeft="true"/>
 
 
 </RelativeLayout>

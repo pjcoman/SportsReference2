@@ -36,15 +36,10 @@ public class Splash extends Activity implements Animation.AnimationListener {
     public void onAnimationEnd(Animation animation) {
 
 
-
-        //  overridePendingTransition(R.anim.fadeinanimation, 0);
-
-        //  Start2.this.overridePendingTransition(R.anim.fadeinanimation, 0);
-
-
-
         Intent mainIntent = new Intent().setClass(Splash.this,
                 MainActivity.class);
+
+        overridePendingTransition(R.anim.fadeinanimation, 0);
 
         startActivity(mainIntent);
 
