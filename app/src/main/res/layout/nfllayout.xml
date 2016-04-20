@@ -6,15 +6,6 @@
     android:focusableInTouchMode="false"
     android:id="@+id/relativelayoutfb">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:id="@+id/imageView2"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/kbicon"
-        android:layout_margin="5dp" />
-
     <AutoCompleteTextView
         android:id="@+id/searchtextfootball"
         android:layout_height="50dp"
@@ -28,14 +19,14 @@
         android:background="@drawable/back"
         android:textColor="@android:color/white"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical|center_horizontal"
         android:textColorHint="@android:color/white"
         android:cursorVisible="true"
-        android:layout_below="@+id/imageView2"
-        android:layout_toRightOf="@+id/clearsearchtext"/>
+        android:layout_toRightOf="@+id/clearsearchtext"
+        android:layout_marginTop="5dp"/>
 
     <Button
         android:id="@+id/clearsearchtext"
@@ -46,9 +37,24 @@
         android:layout_alignParentRight="false"
         android:background="@drawable/clearx"
         android:layout_alignParentEnd="false"
-        android:layout_below="@+id/imageView2"
         android:layout_margin="5dp"
         android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|fill_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/swipe_instructions"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_centerInParent="true"/>
 
 
 </RelativeLayout>

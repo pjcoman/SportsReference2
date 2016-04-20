@@ -1,26 +1,52 @@
 package comapps.com.sportsreference2;
 
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.backendless.Backendless;
+
+import java.io.File;
 
 
-public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class MainActivity extends AppCompatActivity  {
     /** Called when the activity is first created. */
 
-    public static final String LOGTAG="SPORTSREF2";
+    public static final String TAG = "SPORTSREF2";
 
     private GestureDetector detector;
+    private Boolean fileExist;
+    DownloadManager downloadManager;
+    String downloadFileUrl = "https://api.backendless.com/B40D13D5-E84B-F009-FF57-3871FCA5AE00/v1/files/sportsreflinks.db";
+    private long myDownloadReference;
+    private BroadcastReceiver receiverDownloadComplete;
+    private IntentFilter intentFilter;
+
+    View mainScreen;
+
+    View mlbbutton;
+    View nflbutton;
+    View nhlbutton;
+    View nbabutton;
+    View cfbbutton;
+    View cbbbutton;
+    View olybutton;
+
+    SharedPreferences prefs;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,24 +54,56 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         //    overridePendingTransition(R.anim.fadeinanimation, 0);
         setContentView(R.layout.activity_main);
 
+        Backendless.setUrl(Defaults.SERVER_URL );
+        Backendless.initApp( this, Defaults.APPLICATION_ID, Defaults.SECRET_KEY, Defaults.VERSION );
+
+        mainScreen = findViewById(R.id.mainscreen);
+
+
+
+        mlbbutton = findViewById(R.id.button1);
+        nflbutton = findViewById(R.id.button2);
+        nhlbutton = findViewById(R.id.button3);
+        nbabutton = findViewById(R.id.button4);
+        cfbbutton = findViewById(R.id.button5);
+        cbbbutton = findViewById(R.id.button6);
+        olybutton = findViewById(R.id.button7);
+
+
+
+    //    String uri = "https://api.backendless.com/B40D13D5-E84B-F009-FF57-3871FCA5AE00/v1/files/sportsreflinks.db";
+
+
+
+
         android.support.v7.app.ActionBar bar = getSupportActionBar();
 
         if (bar != null) {
             bar.setTitle("Sports Reference");
         }
 
-        detector = new GestureDetector(
-                this);
+      //  detector = new GestureDetector(this);
 
-
-
-        SharedPreferences prefs = this.getSharedPreferences(
+        prefs = this.getSharedPreferences(
                 "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
+
+
         boolean hasVisited = prefs.getBoolean("HAS_VISISTED_BEFORE", false);
+
+
+
         if(!hasVisited) {
 
+            mlbbutton.setVisibility(View.INVISIBLE);
+            nhlbutton.setVisibility(View.INVISIBLE);
+            nbabutton.setVisibility(View.INVISIBLE);
+            nflbutton.setVisibility(View.INVISIBLE);
+            cfbbutton.setVisibility(View.INVISIBLE);
+            cbbbutton.setVisibility(View.INVISIBLE);
+            olybutton.setVisibility(View.INVISIBLE);
 
-            //    Toast instructions = Toast.makeText(MainActivity.this,
+
+           /* //    Toast instructions = Toast.makeText(MainActivity.this,
             //            "Click for search.", Toast.LENGTH_LONG);
             //    instructions.setGravity(Gravity.CENTER, 0, -250);
             //    instructions.show();
@@ -59,19 +117,103 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             //   Toast instructions3 = Toast.makeText(MainActivity.this,
             //           "Touch above search box to close keyboard.", Toast.LENGTH_LONG);
             //   instructions3.setGravity(Gravity.CENTER, 0, -150);
-            //   instructions3.show();
+            //   instructions3.show();*/
 
             prefs.edit().putBoolean("HAS_VISISTED_BEFORE", true).commit();
 
+            downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadFileUrl));
+            request.setTitle("Suggestions download.");
+            request.setDescription("Suggestions database being downloaded...");
+
+            request.setDestinationInExternalFilesDir(getApplicationContext(), "/dbase", "sportsreflinks.db");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.allowScanningByMediaScanner();
+            // request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "sportsreflinks.db");
+
+
+
+
+      /*  if (!hasVisited) {
+
+             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE);
+
+        } else {
+
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+
+        }*/
+
+            String filePath = prefs.getString("filepath", "");
+
+            Log.i(TAG, "file path is " + filePath);
+
+            fileExist = doesFileExist(filePath);
+            Log.i(TAG, "file exists is " + fileExist.toString());
+
+            if ( fileExist == true ) {
+
+                deleteFileIfExists(filePath);
+            }
+
+            myDownloadReference = downloadManager.enqueue(request);
+
+
+
+            intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+
+
+            receiverDownloadComplete = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    long reference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+                    if ( myDownloadReference == reference ) {
+                        DownloadManager.Query query = new DownloadManager.Query();
+                        query.setFilterById(reference);
+                        Cursor cursor = downloadManager.query(query);
+
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                        int status = cursor.getInt(columnIndex);
+                        int fileNameIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
+                        String saveFilePath = cursor.getString(fileNameIndex);
+
+                        fileExist = doesFileExist(saveFilePath);
+
+                        Log.i(TAG, "file exists download complete " + saveFilePath);
+
+                        prefs.edit().putString("filepath", saveFilePath).commit();
+
+
+                        int columnReason = cursor.getColumnIndex(DownloadManager.COLUMN_REASON);
+                        int reason = cursor.getInt(columnReason);
+
+                        mlbbutton.setVisibility(View.VISIBLE);
+                        nhlbutton.setVisibility(View.VISIBLE);
+                        nbabutton.setVisibility(View.VISIBLE);
+                        nflbutton.setVisibility(View.VISIBLE);
+                        cfbbutton.setVisibility(View.VISIBLE);
+                        cbbbutton.setVisibility(View.VISIBLE);
+                        olybutton.setVisibility(View.VISIBLE);
+
+                        //     mainScreen.setEnabled(true);
+
+                        //     mainScreen.setClickable(true);
+
+
+
+
+                    }
+
+                }
+            };
+
         }
 
-        View mlbbutton = findViewById(R.id.button1);
-        View nflbutton = findViewById(R.id.button2);
-        View nhlbutton = findViewById(R.id.button3);
-        View nbabutton = findViewById(R.id.button4);
-        View cfbbutton = findViewById(R.id.button5);
-        View cbbbutton = findViewById(R.id.button6);
-        View olybutton = findViewById(R.id.button7);
+
 
         mlbbutton.setOnClickListener(
                 new View.OnClickListener() {
@@ -155,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 
 
-    public boolean onTouchEvent(MotionEvent event) {
+  /*  public boolean onTouchEvent(MotionEvent event) {
         return detector.onTouchEvent(event);
     }
 
@@ -212,6 +354,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         return true;
     }
+*/
+    private boolean doesFileExist(String filename){
+
+        File folder1 = new File(filename);
+        return folder1.exists();
+
+
+    }
+
+    private boolean deleteFileIfExists(String filename){
+
+        File f = new File(filename);
+        return f.delete();
+
+
+    }
 
 
 
@@ -234,11 +392,33 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.updatedb) {
+
+            prefs.edit().putBoolean("HAS_VISISTED_BEFORE", false).commit();
+           this.recreate();
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (receiverDownloadComplete != null) {
+            registerReceiver(receiverDownloadComplete, intentFilter);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (receiverDownloadComplete != null) {
+            unregisterReceiver(receiverDownloadComplete);
+        }
     }
 
     @Override

@@ -2,27 +2,19 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@android:color/black"
+              android:background="@drawable/wallpaper"
               android:orientation="vertical"
-              tools:context=".MainActivity"  >
+              tools:context=".MainActivity"
+              android:id="@+id/mainscreen">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="@drawable/wallpaper"
-        android:orientation="vertical"
-        android:weightSum="7">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             android:weightSum="2">
 
             <comapps.com.sportsreference2.CustomImageView
@@ -37,7 +29,8 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/baseballreftitlebar"/>
+                android:src="@drawable/baseballreftitlebar"
+                android:visibility="visible"/>
 
             <comapps.com.sportsreference2.CustomImageView
                 android:id="@+id/button2"
@@ -51,18 +44,17 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/footballreftitlebar"/>
+                android:src="@drawable/footballreftitlebar"
+                android:visibility="visible"/>
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             android:weightSum="2">
 
 
@@ -78,7 +70,8 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/hockeyreftitlebar"/>
+                android:src="@drawable/hockeyreftitlebar"
+                android:visibility="visible"/>
 
             <comapps.com.sportsreference2.CustomImageView
                 android:id="@+id/button4"
@@ -92,7 +85,8 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/basketballreftitlebar"/>
+                android:src="@drawable/basketballreftitlebar"
+                android:visibility="visible"/>
 
         </LinearLayout>
 
@@ -102,7 +96,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             android:weightSum="3"
             >
 
@@ -119,7 +113,8 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/collegefootballreftitlebar"/>
+                android:src="@drawable/collegefootballreftitlebar"
+                android:visibility="visible"/>
 
             <comapps.com.sportsreference2.CustomImageView
                 android:id="@+id/button6"
@@ -133,7 +128,8 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/collegebasketballreftitlebar"/>
+                android:src="@drawable/collegebasketballreftitlebar"
+                android:visibility="visible"/>
 
             <comapps.com.sportsreference2.CustomImageView
                 android:id="@+id/button7"
@@ -144,25 +140,10 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                android:src="@drawable/olympicsreftitlebar"/>
+                android:src="@drawable/olympicsreftitlebar"
+                android:visibility="visible"/>
 
         </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/swipe_instructions"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|fill_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/swipe_instructions"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"/>
-
-    </LinearLayout>
 
 
 </LinearLayout>

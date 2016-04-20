@@ -3,6 +3,7 @@ package comapps.com.sportsreference2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
@@ -11,7 +12,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,10 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
     Context context = this;
 
     private AutoCompleteTextView textView;
+    private TextView itextView;
+
+    SharedPreferences prefs;
+
 
     //  private GestureDetector detector;
     private GestureDetectorCompat gestureDetector;
@@ -46,6 +51,18 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
         setContentView(R.layout.nfllayout);
 
         textView = (AutoCompleteTextView) findViewById(R.id.searchtextfootball);
+        itextView = (TextView) findViewById(R.id.textView);
+
+        prefs = this.getSharedPreferences(
+                "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
+
+
+        boolean hasSwiped = prefs.getBoolean("HAS_SWIPED_BEFORE", false);
+
+        if ( hasSwiped == true ) {
+            itextView.setVisibility(View.INVISIBLE);
+        }
+
 
         android.support.v7.app.ActionBar bar = getSupportActionBar();
 
@@ -135,6 +152,7 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
 
         });
 
+
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativelayoutfb);
@@ -143,6 +161,7 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                itextView.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
@@ -204,6 +223,8 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
                            float velocityY) {
 
         Log.i(LOGTAG, "Fling");
+
+        prefs.edit().putBoolean("HAS_SWIPED_BEFORE", true).commit();
 
 
 
@@ -301,7 +322,7 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
         return true;
     }
 
-    @Override
+  /*  @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -315,7 +336,7 @@ public class NFLsearch extends AppCompatActivity implements GestureDetector.OnGe
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
    
     @Override
     public void onBackPressed() {

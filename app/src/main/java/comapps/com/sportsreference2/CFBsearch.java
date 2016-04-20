@@ -3,6 +3,7 @@ package comapps.com.sportsreference2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +39,11 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
 
     private AutoCompleteTextView textView;
 
+    private TextView itextView;
+
+    SharedPreferences prefs;
+
+
     //  private GestureDetector detector;
     private GestureDetectorCompat gestureDetector;
 
@@ -50,6 +55,18 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
         setContentView(R.layout.cfblayout);
 
         textView = (AutoCompleteTextView) findViewById(R.id.searchtextcollegefootball);
+        itextView = (TextView) findViewById(R.id.textView);
+
+        prefs = this.getSharedPreferences(
+                "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
+
+
+        boolean hasSwiped = prefs.getBoolean("HAS_SWIPED_BEFORE", false);
+
+        if ( hasSwiped == true ) {
+            itextView.setVisibility(View.INVISIBLE);
+        }
+
 
         android.support.v7.app.ActionBar bar = getSupportActionBar();
 
@@ -133,6 +150,8 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
             }
 
         });
+
+
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.relativelayoutcfb);
@@ -141,6 +160,7 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                itextView.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
@@ -199,6 +219,8 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
                            float velocityY) {
 
         Log.i(LOGTAG, "Fling");
+
+        prefs.edit().putBoolean("HAS_SWIPED_BEFORE", true).commit();
 
 
 
@@ -288,7 +310,7 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
     }
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -308,7 +330,7 @@ public class CFBsearch extends AppCompatActivity implements GestureDetector.OnGe
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private static String converJsonToStringFromAssetFolder(Context context) throws IOException {
         AssetManager manager = context.getAssets();
