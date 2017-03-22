@@ -5,19 +5,22 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 /**
  * Created by me on 8/25/2015.
  */
 public class WebView extends AppCompatActivity {
 
-    private static final String TAG = "SPORTSREF2";
-    Activity activity;
-    int orientationValue;
+    private static final String TAG = "WEBVIEW";
+
+    private android.webkit.WebView webView;
 
 
     @Override
@@ -26,6 +29,10 @@ public class WebView extends AppCompatActivity {
         setContentView(R.layout.webview);
     //    RelativeLayout layout = (RelativeLayout) findViewById(R.id.webLayout);
 
+        Button closeButton = (Button) findViewById(R.id.closeButton);
+
+
+
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -33,26 +40,31 @@ public class WebView extends AppCompatActivity {
         int height = dm.heightPixels;
 
 
-        activity = WebView.this;
-        orientationValue = activity.getResources().getConfiguration().orientation;
+        Activity activity = WebView.this;
+        int orientationValue = activity.getResources().getConfiguration().orientation;
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        WindowManager.LayoutParams mWindowParams = new WindowManager.LayoutParams();
         switch(orientationValue) {
             case Configuration.ORIENTATION_PORTRAIT:
-                getWindow().setLayout((int) (width * .95), (int) (height * .85));
+                getWindow().setLayout((int) (width * .95), (int) (height * .80));
+                layoutParams.y = (int) (height * .15);
+                getWindow().setGravity(Gravity.TOP);
+                getWindow().setAttributes(layoutParams);
+                mWindowParams.gravity = Gravity.TOP;
+
                 break;
             case Configuration.ORIENTATION_LANDSCAPE:
-                getWindow().setLayout((int) (width * .95), (int) (height * .75));
+                getWindow().setLayout(width, (int) (height * .80));
+                layoutParams.y = (int) (height * .25);
+                getWindow().setGravity(Gravity.TOP);
+                getWindow().setAttributes(layoutParams);
+                mWindowParams.gravity = Gravity.TOP;
+
                 break;
 
         }
 
 
-        getWindow().setGravity(Gravity.BOTTOM);
-
-
-
-
-        WindowManager.LayoutParams mWindowParams = new WindowManager.LayoutParams();
-        mWindowParams.gravity = Gravity.BOTTOM;
 
 
 
@@ -62,77 +74,105 @@ public class WebView extends AppCompatActivity {
 
 
 
-        String link = extras.getString("link");
+        String url = extras.getString("link");
 
-        String sendingActivity = extras.getString("whichactivity");
+        Log.d(TAG, "url is " + url);
 
-
-
-   /*     switch (sendingActivity) {
-            case "baseball":
-                layout.setBackgroundResource(R.drawable.wallpaper_bb); break;
-            case "hockey":
-                layout.setBackgroundResource(R.drawable.wallpaper_h); break;
-            case "football":
-                layout.setBackgroundResource(R.drawable.wallpaper_fb); break;
-            case "basketball":
-                layout.setBackgroundResource(R.drawable.wallpaper_basketb); break;
-            case "cbb":
-                layout.setBackgroundResource(R.drawable.walpaper_cbb); break;
-            case "cfb":
-                layout.setBackgroundResource(R.drawable.wallpaper_cfb); break;
-            case "oly":
-                layout.setBackgroundResource(R.drawable.wallpaper_o); break;
+        webView = (android.webkit.WebView) findViewById(R.id.webview1);
 
 
-            default:
-
-                break;
-
-        }  */
+        webView.setWebViewClient(new WebViewClient());
 
 
 
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.ic_launcher);
-
-        android.webkit.WebView webView = (android.webkit.WebView) findViewById(R.id.webview1);
-
-
-        webView.setWebViewClient(new MyWebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(false);
-
-
-        // make sure your pinch zoom is enabled
+        webView.getSettings().setLoadWithOverviewMode(false);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(true);
 
-// don't show the zoom controls
-        webView.getSettings().setDisplayZoomControls(false);
-        webView.loadUrl(link);
 
-    }
+       webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+       webView.setScrollbarFadingEnabled(false);
 
-    private class MyWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+        if (savedInstanceState != null) {
+            webView.saveState(savedInstanceState);
+
+        } else {
+
+            if ( getResources().getConfiguration().orientation == 2 ) {
+                webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+                webView.loadUrl(url);
+            } else {
+                webView.loadUrl(url);
+            }
+
+
+
         }
+
+
+
+
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    destroyWebView();
+
+            }
+        });
+
+
+
+
+    }
+
+    private void destroyWebView() {
+
+
+
+        if(webView != null) {
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.loadUrl("about:blank");
+            webView.pauseTimers();
+            webView = null;
+
+            finish();
+        }
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            if(webView.canGoBack()){
+                webView.goBack();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedState) {
+        super.onRestoreInstanceState(savedState);
+        webView.restoreState(savedState);
     }
 
 
 
-
-
-
-
-    public void close(View v) {
-
-
-        finish();
-
-    }
 
 
 }

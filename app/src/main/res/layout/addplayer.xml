@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wallpaper"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:text="select sport" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/spinnerCategory"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:popupBackground="@android:color/white"
+        android:popupTheme="@style/Base.Widget.AppCompat.TextView.SpinnerItem" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextName"
+        android:gravity="center"
+        android:background="@android:color/background_light"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:hint="name" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextAddress"
+        android:gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@android:color/background_light"
+        android:hint="web address ( after last / )" />
+
+    <Button
+    android:text="Add"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/buttonAdd"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp" />
+    <Button
+        android:text="Load"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLoad"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>

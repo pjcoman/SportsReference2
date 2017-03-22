@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "comapps.com.sportsreference2"
         minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 30
-        versionName "3.0"
+        targetSdkVersion 23
+        versionCode 425
+        versionName "4.25"
     }
     buildTypes {
         release {
@@ -22,9 +22,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-    compile 'com.backendless:backendless:3.0.11'
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.jaredrummler:material-spinner:1.1.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
 }
+
+
+
+
+apply plugin: 'com.google.gms.google-services'

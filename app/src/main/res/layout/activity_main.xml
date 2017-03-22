@@ -4,17 +4,16 @@
               android:layout_height="fill_parent"
               android:background="@drawable/wallpaper"
               android:orientation="vertical"
-              tools:context=".MainActivity"
-              android:id="@+id/mainscreen">
+              tools:context=".SRActivity"
+    android:padding="2dp">
 
 
-
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="5dp"
+            android:padding="8dp"
             android:weightSum="2">
 
             <comapps.com.sportsreference2.CustomImageView
@@ -23,14 +22,12 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/baseballreftitlebar"
-                android:visibility="visible"/>
+                android:src="@drawable/baseball_icon"
+                android:visibility="visible" />
 
             <comapps.com.sportsreference2.CustomImageView
                 android:id="@+id/button2"
@@ -38,13 +35,11 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/footballreftitlebar"
+                android:src="@drawable/football_icon"
                 android:visibility="visible"/>
         </LinearLayout>
 
@@ -54,7 +49,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="5dp"
+            android:padding="8dp"
             android:weightSum="2">
 
 
@@ -64,13 +59,11 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/hockeyreftitlebar"
+                android:src="@drawable/hockey_icon"
                 android:visibility="visible"/>
 
             <comapps.com.sportsreference2.CustomImageView
@@ -79,71 +72,78 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/basketballreftitlebar"
+                android:src="@drawable/basketball_icon"
                 android:visibility="visible"/>
 
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:weightSum="3"
-            >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:padding="8dp"
+
+        >
 
 
-            <comapps.com.sportsreference2.CustomImageView
-                android:id="@+id/button5"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/collegefootballreftitlebar"
-                android:visibility="visible"/>
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button5"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/collegefootball_icon"
+            android:visibility="visible"/>
 
-            <comapps.com.sportsreference2.CustomImageView
-                android:id="@+id/button6"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:padding="0dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/collegebasketballreftitlebar"
-                android:visibility="visible"/>
+        <comapps.com.sportsreference2.CustomImageView
+            android:id="@+id/button6"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/collegebasketball_icon"
+            android:visibility="visible"/>
 
-            <comapps.com.sportsreference2.CustomImageView
-                android:id="@+id/button7"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/olympicsreftitlebar"
-                android:visibility="visible"/>
+        <comapps.com.sportsreference2.CustomImageView
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/olympicsreftitlebar"
+            android:visibility="gone"/>
 
-        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<Spinner
+        android:id="@+id/spinnerHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:textAlignment="textEnd" />-->
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 
 </LinearLayout>

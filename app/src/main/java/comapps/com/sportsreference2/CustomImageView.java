@@ -5,14 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
 
 /**
  * Created by me on 1/8/2016.
  */
-public class CustomImageView extends ImageButton {
+public class CustomImageView extends android.support.v7.widget.AppCompatImageButton {
 
-    public static float radius = 50.0f;
+    private static final float radius = 50.0f;
 
     public CustomImageView(Context context) {
         super(context);

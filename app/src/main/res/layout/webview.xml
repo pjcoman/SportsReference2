@@ -3,30 +3,29 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/webLayout"
-                android:paddingBottom="10dp">
+    android:background="@android:color/transparent">
 
     <WebView
              android:id="@+id/webview1"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-        />
+             android:layout_height="match_parent">
+
+    </WebView>
 
     <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/closeButton"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:onClick="close"
+        android:onClick="close (WebView)"
         android:layout_gravity="center_horizontal"
 
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="false"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/clearx"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_margin="20dp"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:id="@+id/closeButton"
+        android:visibility="gone" />
 
 </RelativeLayout>

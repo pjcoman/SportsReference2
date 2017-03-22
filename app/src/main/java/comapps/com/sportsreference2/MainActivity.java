@@ -1,381 +1,172 @@
 package comapps.com.sportsreference2;
 
-
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.backendless.Backendless;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
-import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * Created by me on 3/21/2017.
+ */
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MAINACTIVITY";
+
+    ViewPager simpleViewPager;
+    TabLayout tabLayout;
+
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private ArrayList itemsNamesHistory;
+    private ArrayList itemsLinksHistory;
+
+    private ArrayAdapter<String> dataAdapter;
+
+    private Spinner spinner;
+    private Spinner spinnerHistory;
+    private CheckBox checkBoxFirstName;
+    private CheckBox checkBox1stLastName;
 
 
-public class MainActivity extends AppCompatActivity  {
-    /** Called when the activity is first created. */
 
-    public static final String TAG = "SPORTSREF2";
+    TextView dialogTextView;
 
-    private GestureDetector detector;
-    private Boolean fileExist;
-    DownloadManager downloadManager;
-    String downloadFileUrl = "https://api.backendless.com/B40D13D5-E84B-F009-FF57-3871FCA5AE00/v1/files/sportsreflinks.db";
-    private long myDownloadReference;
-    private BroadcastReceiver receiverDownloadComplete;
-    private IntentFilter intentFilter;
-
-    View mainScreen;
-
-    View mlbbutton;
-    View nflbutton;
-    View nhlbutton;
-    View nbabutton;
-    View cfbbutton;
-    View cbbbutton;
-    View olybutton;
-
-    SharedPreferences prefs;
+    private static FirebaseDatabase database;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //    overridePendingTransition(R.anim.fadeinanimation, 0);
-        setContentView(R.layout.activity_main);
-
-        Backendless.setUrl(Defaults.SERVER_URL );
-        Backendless.initApp( this, Defaults.APPLICATION_ID, Defaults.SECRET_KEY, Defaults.VERSION );
-
-        mainScreen = findViewById(R.id.mainscreen);
-
-
-
-        mlbbutton = findViewById(R.id.button1);
-        nflbutton = findViewById(R.id.button2);
-        nhlbutton = findViewById(R.id.button3);
-        nbabutton = findViewById(R.id.button4);
-        cfbbutton = findViewById(R.id.button5);
-        cbbbutton = findViewById(R.id.button6);
-        olybutton = findViewById(R.id.button7);
-
-
-
-    //    String uri = "https://api.backendless.com/B40D13D5-E84B-F009-FF57-3871FCA5AE00/v1/files/sportsreflinks.db";
-
-
-
-
-        android.support.v7.app.ActionBar bar = getSupportActionBar();
-
-        if (bar != null) {
-            bar.setTitle("Sports Reference");
+        if(database == null) {
+            database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true);
         }
 
-      //  detector = new GestureDetector(this);
+        setContentView(R.layout.tabbedlayoutmain);
+
+        simpleViewPager = (ViewPager) findViewById(R.id.simpleViewPager);
+        tabLayout = (TabLayout) findViewById(R.id.simpleTabLayout);
+        spinnerHistory = (Spinner) findViewById(R.id.spinnerHistory);
+
+        TabLayout.Tab firstTab = tabLayout.newTab();
+        firstTab.setText(null); // set the Text for the first Tab
+        firstTab.setIcon(R.drawable.na_icon); // set an icon for the
+        tabLayout.addTab(firstTab); // add  the tab at in the TabLayout
+        TabLayout.Tab secondTab = tabLayout.newTab();
+        secondTab.setText(null); // set the Text for the second Tab
+        secondTab.setIcon(R.drawable.world_icon); // set an icon for the
+        tabLayout.addTab(secondTab); // add  the tab  in the TabLayout
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+
+            ImageView imageView = new ImageView(getApplicationContext());
+            if ( i == 0 ) {
+                imageView.setImageResource(R.drawable.na_icon);
+            } else {
+                imageView.setImageResource(R.drawable.world_icon);
+            }
+
+            tabLayout.getTabAt(i).setCustomView(imageView);
+        }
 
         prefs = this.getSharedPreferences(
                 "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
+        editor = prefs.edit();
 
 
-        boolean hasVisited = prefs.getBoolean("HAS_VISISTED_BEFORE", false);
+        boolean hasVisited = prefs.getBoolean("VISITED", false);
+
+        Gson gson = new Gson();
+        itemsNamesHistory = gson.fromJson(prefs.getString("NAMES_HISTORY_GSON", ""), ArrayList.class);
+        itemsLinksHistory = gson.fromJson(prefs.getString("LINKS_HISTORY_GSON", ""), ArrayList.class);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateandTime = sdf.format(new Date());
+        Log.e(TAG ,"Time ----> " + currentDateandTime);
 
 
+        if( !hasVisited ) {
+            prefs.edit().putBoolean("VISITED", true).commit();
 
-        if(!hasVisited) {
+        }
 
-            mlbbutton.setVisibility(View.INVISIBLE);
-            nhlbutton.setVisibility(View.INVISIBLE);
-            nbabutton.setVisibility(View.INVISIBLE);
-            nflbutton.setVisibility(View.INVISIBLE);
-            cfbbutton.setVisibility(View.INVISIBLE);
-            cbbbutton.setVisibility(View.INVISIBLE);
-            olybutton.setVisibility(View.INVISIBLE);
+        prefs.edit().putString("VISITED_DATE", currentDateandTime).commit();
 
+        PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        simpleViewPager.setAdapter(adapter);
 
-           /* //    Toast instructions = Toast.makeText(MainActivity.this,
-            //            "Click for search.", Toast.LENGTH_LONG);
-            //    instructions.setGravity(Gravity.CENTER, 0, -250);
-            //    instructions.show();
+        simpleViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-            Toast instructions2 = Toast.makeText(MainActivity.this,
-                    "Click enter with no text in search box \n " +
-                            "         to go to the main site.", Toast.LENGTH_LONG);
-            instructions2.setGravity(Gravity.CENTER, 0, -200);
-            instructions2.show();
-
-            //   Toast instructions3 = Toast.makeText(MainActivity.this,
-            //           "Touch above search box to close keyboard.", Toast.LENGTH_LONG);
-            //   instructions3.setGravity(Gravity.CENTER, 0, -150);
-            //   instructions3.show();*/
-
-            prefs.edit().putBoolean("HAS_VISISTED_BEFORE", true).commit();
-
-            downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadFileUrl));
-            request.setTitle("Suggestions download.");
-            request.setDescription("Suggestions database being downloaded...");
-
-            request.setDestinationInExternalFilesDir(getApplicationContext(), "/dbase", "sportsreflinks.db");
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.allowScanningByMediaScanner();
-            // request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "sportsreflinks.db");
-
-
-
-
-      /*  if (!hasVisited) {
-
-             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE);
+        if ( itemsNamesHistory == null ) {
+            spinnerHistory.setVisibility(View.GONE);
 
         } else {
 
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-
-        }*/
-
-            String filePath = prefs.getString("filepath", "");
-
-            Log.i(TAG, "file path is " + filePath);
-
-            fileExist = doesFileExist(filePath);
-            Log.i(TAG, "file exists is " + fileExist.toString());
-
-            if ( fileExist == true ) {
-
-                deleteFileIfExists(filePath);
-            }
-
-            myDownloadReference = downloadManager.enqueue(request);
+            dataAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, itemsNamesHistory);
 
 
+            dataAdapter.setDropDownViewResource(R.layout.customspinner);
 
-            intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+            spinnerHistory.setAdapter(dataAdapter);
+
+            spinnerHistory.setSelection(Adapter.NO_SELECTION,false);
 
 
-            receiverDownloadComplete = new BroadcastReceiver() {
+            spinnerHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onReceive(Context context, Intent intent) {
-                    long reference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-
-                    if ( myDownloadReference == reference ) {
-                        DownloadManager.Query query = new DownloadManager.Query();
-                        query.setFilterById(reference);
-                        Cursor cursor = downloadManager.query(query);
-
-                        cursor.moveToFirst();
-                        int columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                        int status = cursor.getInt(columnIndex);
-                        int fileNameIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
-                        String saveFilePath = cursor.getString(fileNameIndex);
-
-                        fileExist = doesFileExist(saveFilePath);
-
-                        Log.i(TAG, "file exists download complete " + saveFilePath);
-
-                        prefs.edit().putString("filepath", saveFilePath).commit();
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                        int columnReason = cursor.getColumnIndex(DownloadManager.COLUMN_REASON);
-                        int reason = cursor.getInt(columnReason);
-
-                        mlbbutton.setVisibility(View.VISIBLE);
-                        nhlbutton.setVisibility(View.VISIBLE);
-                        nbabutton.setVisibility(View.VISIBLE);
-                        nflbutton.setVisibility(View.VISIBLE);
-                        cfbbutton.setVisibility(View.VISIBLE);
-                        cbbbutton.setVisibility(View.VISIBLE);
-                        olybutton.setVisibility(View.VISIBLE);
-
-                        //     mainScreen.setEnabled(true);
-
-                        //     mainScreen.setClickable(true);
-
-
-
-
-                    }
+                    Intent intent = new Intent(getApplication().getApplicationContext(), WebView.class);
+                    intent.putExtra("link", itemsLinksHistory.get(position).toString());
+                    //   intent.putExtra("whichactivity", "baseball");
+                    startActivity(intent);
 
                 }
-            };
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+
+            });
+
 
         }
 
 
 
-        mlbbutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentbaseballsearch = new Intent();
-                        intentbaseballsearch.setClass(getApplicationContext() ,MLBsearch.class);
-                        startActivity(intentbaseballsearch);
-
-                    }
-                }
-        );
-
-        nflbutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentfootballsearch = new Intent();
-                        intentfootballsearch.setClass(getApplicationContext() ,NFLsearch.class);
-                        startActivity(intentfootballsearch);
-
-                    }
-                }
-        );
-
-        nhlbutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intenthockeysearch = new Intent();
-                        intenthockeysearch.setClass(getApplicationContext() ,NHLsearch.class);
-                        startActivity(intenthockeysearch);
-
-                    }
-                }
-        );
-
-        nbabutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentbasketballsearch = new Intent();
-                        intentbasketballsearch.setClass(getApplicationContext() ,NBAsearch.class);
-                        startActivity(intentbasketballsearch);
-
-                    }
-                }
-        );
-
-        cfbbutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentcollegefootballsearch = new Intent();
-                        intentcollegefootballsearch.setClass(getApplicationContext() ,CFBsearch.class);
-                        startActivity(intentcollegefootballsearch);
-
-                    }
-                }
-        );
-
-        cbbbutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentcollegebasketballsearch = new Intent();
-                        intentcollegebasketballsearch.setClass(getApplicationContext() ,CBBsearch.class);
-                        startActivity(intentcollegebasketballsearch);
-
-                    }
-                }
-        );
-
-        olybutton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intentolympicssearch = new Intent();
-                        intentolympicssearch.setClass(getApplicationContext() ,OLYsearch.class);
-                        startActivity(intentolympicssearch);
-
-                    }
-                }
-        );
     }
-
-
-
-
-
-  /*  public boolean onTouchEvent(MotionEvent event) {
-        return detector.onTouchEvent(event);
-    }
-
-    public boolean onDown(MotionEvent e) {
-
-        View swipe_instructions = findViewById(R.id.swipe_instructions);
-        swipe_instructions.setVisibility(View.GONE);
-
-        return false;
-    }
-
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                           float velocityY) {
-
-        float sensitvity = 150;
-
-        if ((e1.getX() - e2.getX()) > sensitvity) {
-
-            Intent intentbaseballsearch = new Intent();
-            intentbaseballsearch.setClass(getApplicationContext(),
-                    MLBsearch.class);
-            startActivity(intentbaseballsearch);
-            overridePendingTransition(R.anim.pushinfromright,R.anim.pushouttoleft);
-
-
-        } else if ((e2.getX() - e1.getX()) > sensitvity) {
-
-            Intent intentolympicssearch = new Intent();
-            intentolympicssearch.setClass(getApplicationContext(),
-                    OLYsearch.class);
-            startActivity(intentolympicssearch);
-            overridePendingTransition(R.anim.pushinfromleft,R.anim.pushouttoright);
-
-        }
-
-        return true;
-    }
-
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-                            float distanceY) {
-
-        return false;
-    }
-
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    public boolean onSingleTapUp(MotionEvent e) {
-
-        return true;
-    }
-*/
-    private boolean doesFileExist(String filename){
-
-        File folder1 = new File(filename);
-        return folder1.exists();
-
-
-    }
-
-    private boolean deleteFileIfExists(String filename){
-
-        File f = new File(filename);
-        return f.delete();
-
-
-    }
-
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -391,34 +182,143 @@ public class MainActivity extends AppCompatActivity  {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.updatedb) {
+    /*
 
-            prefs.edit().putBoolean("HAS_VISISTED_BEFORE", false).commit();
-           this.recreate();
+        if( id == R.id.addplayer ) {
 
-            return true;
+          *//*  Intent intentAddPlayer = new Intent();
+            intentAddPlayer.setClass(getApplicationContext() , AddItem.class);
+            startActivity(intentAddPlayer);
+            return true;*//*
+        } */
+
+        if ( id == R.id.settings){
+
+
+            AlertDialog.Builder popDialogBuilder = new AlertDialog.Builder(this);
+            View mView = getLayoutInflater().inflate(R.layout.customdialog, null);
+            //    popDialogBuilder.setIcon(R.mipmap.ic_launcher);
+            //    popDialogBuilder.setTitle("Characters for Filter");
+            spinner = (Spinner) mView.findViewById(R.id.spinnerDialog);
+            checkBoxFirstName = (CheckBox) mView.findViewById(R.id.checkBoxName);
+            checkBox1stLastName = (CheckBox) mView.findViewById(R.id.checkBox1stLastName);
+            String[] integers = {"3", "4", "5", "6", "7", "8"};
+        //    ArrayAdapter<String> adapterDialog = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        //              integers);
+        //    adapterDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //    spinner.setAdapter(adapterDialog);
+
+       //     spinner.setSelection(prefs.getInt("FILTER_INT", 3) - 3);
+            checkBoxFirstName.setChecked(prefs.getBoolean("FILTER_FIRSTNAME", false));
+            checkBox1stLastName.setChecked(prefs.getBoolean("FILTER_LASTNAME", false));
+
+            if ( checkBoxFirstName.isChecked() || checkBox1stLastName.isChecked()) {
+                spinner.setEnabled(false);
+            } else {
+                spinner.setEnabled(true);
+            }
+
+
+            checkBoxFirstName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if ( isChecked ) {
+                        checkBox1stLastName.setChecked(false);
+                        spinner.setEnabled(false);
+
+                    } else {
+                        spinner.setEnabled(true);
+                    }
+                }
+            });
+
+            checkBox1stLastName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if ( isChecked ) {
+                        checkBoxFirstName.setChecked(false);
+                        spinner.setEnabled(false);
+
+                    } else {
+                        spinner.setEnabled(true);
+                    }
+                }
+            });
+
+            // Button OK
+            popDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if ( checkBoxFirstName.isChecked()) {
+
+                        Toast.makeText(MainActivity.this, "filter on first name",
+                                Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("FILTER_FIRSTNAME", true);
+                        editor.putBoolean("FILTER_LASTNAME", false);
+                        editor.commit();
+
+
+                    } else if ( checkBox1stLastName.isChecked()) {
+
+                        Toast.makeText(MainActivity.this, "filter on last name (1st letter)",
+                                Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("FILTER_FIRSTNAME", false);
+                        editor.putBoolean("FILTER_LASTNAME", true);
+                        editor.commit();
+
+
+                    } else if ( spinner.isEnabled()){
+
+                        Toast.makeText(MainActivity.this,
+                                spinner.getSelectedItem().toString() + " character filter",
+                                Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("FILTER_FIRSTNAME", false);
+                        editor.putBoolean("FILTER_LASTNAME", false);
+
+                        Integer selected = Integer.parseInt(spinner.getSelectedItem().toString());
+
+                        try {
+                            editor.putInt("FILTER_INT", selected);
+                        } catch (Exception e) {
+                            editor.putInt("FILTER_INT", 3);
+                            e.printStackTrace();
+                        }
+                        editor.commit();
+
+
+                    }
+
+                    dialog.dismiss();
+                }
+
+
+            });
+
+            popDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+
+            popDialogBuilder.setView(mView);
+            AlertDialog alertDialog = popDialogBuilder.create();
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show();
+
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE  );
+
+
+
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (receiverDownloadComplete != null) {
-            registerReceiver(receiverDownloadComplete, intentFilter);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (receiverDownloadComplete != null) {
-            unregisterReceiver(receiverDownloadComplete);
-        }
     }
 
     @Override
@@ -427,4 +327,33 @@ public class MainActivity extends AppCompatActivity  {
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
+
+    protected void onResume() {
+        super.onResume();
+        getPrefs();
+
+        Gson gson = new Gson();
+        itemsNamesHistory = gson.fromJson(prefs.getString("NAMES_HISTORY_GSON", ""), ArrayList.class);
+        itemsLinksHistory = gson.fromJson(prefs.getString("LINKS_HISTORY_GSON", ""), ArrayList.class);
+        try {
+            dataAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //...Now update your objects with preference values
+    }
+
+    private void getPrefs() {
+        prefs = this.getSharedPreferences(
+                "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
+
+
+
+    }
+
+
+
+
+
 }

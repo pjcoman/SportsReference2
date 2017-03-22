@@ -1,61 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/walpaper_cbb"
     android:focusableInTouchMode="false"
-    android:id="@+id/relativelayoutcbb"
-    >
-
+    android:id="@+id/linearlayoutcbb"
+    android:orientation="vertical">
 
     <AutoCompleteTextView
         android:id="@+id/searchtextcollegebasketball"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:dropDownWidth="match_parent"
         android:ems="8"
         android:inputType="text"
-        android:popupBackground="@null"
+        android:popupBackground="@drawable/back"
         android:textSize="20sp"
         android:layout_width="match_parent"
-        android:background="@drawable/back"
+
         android:textColor="@android:color/white"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentRight="true"
         android:gravity="center_vertical|center_horizontal"
-        android:textColorHint="@android:color/white"
+        android:hint="@string/edittext_hint"
+        android:textColorHint="#8AFFFFFF"
         android:cursorVisible="true"
-        android:layout_toRightOf="@+id/clearsearchtext"
-        android:layout_marginTop="5dp"/>
+        android:enabled="false"
+        android:padding="10dp" style="@style/Widget.AppCompat.AutoCompleteTextView" />
 
-    <Button
-        android:id="@+id/clearsearchtext"
-        android:layout_height="40dp"
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/collegebasketball_icon_new"
+        android:id="@+id/imageView"
+        android:layout_gravity="right"
+        android:layout_margin="10dp" />
 
-        android:textSize="30sp"
-        android:layout_width="40dp"
-        android:layout_alignParentRight="false"
-        android:background="@drawable/clearx"
-        android:layout_alignParentEnd="false"
-        android:layout_margin="5dp"
-        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/textViewLinksCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/yellow" />
+
+    <ProgressBar
+        android:id="@+id/progressBarLoadStatus2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|fill_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:text="@string/swipe_instructions"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentBottom="false"
-        android:layout_centerInParent="true"/>
+        android:gravity="center"
+        android:padding="20dp" />
+
+    <CheckBox
+        android:text="@string/show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"
+        android:textColor="@android:color/black"
+        android:checked="true"
+        android:padding="10dp" />
 
 
-</RelativeLayout>
+</LinearLayout>

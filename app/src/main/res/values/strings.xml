@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="update">update suggestions</string>
+    <string name="edittext_hint"><font size="12">long click clears</font></string>
+
     <string name="app_name">Sports Reference</string>
-    <string name="hint">enter text to search</string>
-    <string name="clear">X</string>
-    <string name="swipe_instructions">swipe screen to switch sports</string>
-    <string name="close">CLOSE</string>
+    <string name="swipe_instructions">swipe screen to switch sports, swipe up or down to return to main screen, use settings to change filter and touch outside pop-up window to close it</string>
+    <string name="don_t_show">don\'t show</string>
+    <string name="show">show instructions</string>
+    <string name="mlb">mlb</string>
+    <string name="ncaa_basketball">ncaa basketball</string>
+    <string name="ncaa_football">ncaa football</string>
+    <string name="nba">nba</string>
+    <string name="nfl">nfl</string>
+    <string name="nhl">nhl</string>
+
+    <string-array name="sports">
+        <item>baseball</item>
+        <item>football</item>
+        <item>hockey</item>
+        <item>basketball</item>
+        <item>college_football</item>
+        <item>college_basketball</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
