@@ -6,31 +6,40 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by me on 3/21/2017.
@@ -40,122 +49,156 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MAINACTIVITY";
 
-    ViewPager simpleViewPager;
-    TabLayout tabLayout;
+    private ViewPager viewPager;
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
-    private ArrayList itemsNamesHistory;
-    private ArrayList itemsLinksHistory;
+    private ArrayList<SportsItem> itemsHistory = new ArrayList<>();
 
-    private ArrayAdapter<String> dataAdapter;
 
-    private Spinner spinner;
-    private Spinner spinnerHistory;
+    private MySpinnerAdapter spinnerAdapter;
+
     private CheckBox checkBoxFirstName;
     private CheckBox checkBox1stLastName;
+    private CheckBox checkBoxAddFree;
+
+    private Spinner spinnerMlb;
+    private Spinner spinnerNfl;
+    private Spinner spinnerNhl;
+    private Spinner spinnerNba;
 
 
+    private PopupWindow fadePopup;
 
-    TextView dialogTextView;
-
-    private static FirebaseDatabase database;
-
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(database == null) {
-            database = FirebaseDatabase.getInstance();
-            database.setPersistenceEnabled(true);
-        }
 
         setContentView(R.layout.tabbedlayoutmain);
-
-        simpleViewPager = (ViewPager) findViewById(R.id.simpleViewPager);
-        tabLayout = (TabLayout) findViewById(R.id.simpleTabLayout);
-        spinnerHistory = (Spinner) findViewById(R.id.spinnerHistory);
+        viewPager = findViewById(R.id.simpleViewPager);
+        TabLayout tabLayout = findViewById(R.id.simpleTabLayout);
+        Spinner spinner = findViewById(R.id.spinnerHistory);
 
         TabLayout.Tab firstTab = tabLayout.newTab();
         firstTab.setText(null); // set the Text for the first Tab
         firstTab.setIcon(R.drawable.na_icon); // set an icon for the
         tabLayout.addTab(firstTab); // add  the tab at in the TabLayout
+
         TabLayout.Tab secondTab = tabLayout.newTab();
         secondTab.setText(null); // set the Text for the second Tab
         secondTab.setIcon(R.drawable.world_icon); // set an icon for the
         tabLayout.addTab(secondTab); // add  the tab  in the TabLayout
 
+
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
 
             ImageView imageView = new ImageView(getApplicationContext());
-            if ( i == 0 ) {
+            if (i == 0) {
                 imageView.setImageResource(R.drawable.na_icon);
+
             } else {
                 imageView.setImageResource(R.drawable.world_icon);
             }
 
+
+            //noinspection ConstantConditions
             tabLayout.getTabAt(i).setCustomView(imageView);
         }
 
+     /*   for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) tab.setCustomView(R.layout.tabiconlayout);
+        }*/
+
         prefs = this.getSharedPreferences(
                 "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
-        editor = prefs.edit();
 
 
-        boolean hasVisited = prefs.getBoolean("VISITED", false);
-
-        Gson gson = new Gson();
-        itemsNamesHistory = gson.fromJson(prefs.getString("NAMES_HISTORY_GSON", ""), ArrayList.class);
-        itemsLinksHistory = gson.fromJson(prefs.getString("LINKS_HISTORY_GSON", ""), ArrayList.class);
-
+        Type type = new TypeToken<ArrayList<SportsItem>>() {}.getType();
+        itemsHistory = new Gson().fromJson(prefs.getString("SPORTSITEMS_HISTORY", ""), type);
+        Log.e(TAG, "itemsHistory ----> " + itemsHistory);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String currentDateandTime = sdf.format(new Date());
-        Log.e(TAG ,"Time ----> " + currentDateandTime);
+        Log.e(TAG, "Time ----> " + currentDateandTime);
 
 
-        if( !hasVisited ) {
-            prefs.edit().putBoolean("VISITED", true).commit();
 
-        }
 
-        prefs.edit().putString("VISITED_DATE", currentDateandTime).commit();
+        prefs.edit().putString("VISITED_DATE", currentDateandTime).apply();
 
-        PagerAdapter adapter = new PagerAdapter
+
+
+        final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
-        simpleViewPager.setAdapter(adapter);
+        viewPager.setAdapter(adapter);
 
-        simpleViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        if ( itemsNamesHistory == null ) {
-            spinnerHistory.setVisibility(View.GONE);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(@NonNull TabLayout.Tab tab) {
+
+                Log.e(TAG, "Tab selected ----> " + tab.getPosition());
+
+                //THIS!!
+                if (viewPager != null) {
+                    viewPager.setCurrentItem(tab.getPosition());
+
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        spinnerAdapter = new MySpinnerAdapter(getApplicationContext(), itemsHistory);
+
+
+        if (itemsHistory == null || itemsHistory.size() == 0) {
+            spinner.setVisibility(View.GONE);
 
         } else {
 
-            dataAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, itemsNamesHistory);
 
 
-            dataAdapter.setDropDownViewResource(R.layout.customspinner);
 
-            spinnerHistory.setAdapter(dataAdapter);
+            spinner.setAdapter(spinnerAdapter);
+            spinner.setSelected(false);
+            spinner.setSelection(0, true);
 
-            spinnerHistory.setSelection(Adapter.NO_SELECTION,false);
 
-
-            spinnerHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
                     Intent intent = new Intent(getApplication().getApplicationContext(), WebView.class);
-                    intent.putExtra("link", itemsLinksHistory.get(position).toString());
-                    //   intent.putExtra("whichactivity", "baseball");
+
+
+                    Log.e(TAG, "spinner position ----> " + position);
+                    Log.e(TAG, "itemsHistory position ----> " + itemsHistory.get(position));
+                    Log.e(TAG, "itemsHistory size ----> " + itemsHistory.size());
+
+                    dimBackground();
+
+                    intent.putExtra("link", itemsHistory.get(position).getLink());
                     startActivity(intent);
+
 
                 }
 
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+
 
                 }
 
@@ -163,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
 
 
     }
@@ -171,126 +213,255 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (prefs.getBoolean("ME", false)) {
+            getMenuInflater().inflate(R.menu.menu_main_noadd, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_main_noadd, menu);
+        }
+
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-    /*
 
-        if( id == R.id.addplayer ) {
-
-          *//*  Intent intentAddPlayer = new Intent();
-            intentAddPlayer.setClass(getApplicationContext() , AddItem.class);
-            startActivity(intentAddPlayer);
-            return true;*//*
-        } */
-
-        if ( id == R.id.settings){
+        if (id == R.id.myteams) {
 
 
             AlertDialog.Builder popDialogBuilder = new AlertDialog.Builder(this);
-            View mView = getLayoutInflater().inflate(R.layout.customdialog, null);
+            View mView = getLayoutInflater().inflate(R.layout.customdialogfavorites, null);
             //    popDialogBuilder.setIcon(R.mipmap.ic_launcher);
             //    popDialogBuilder.setTitle("Characters for Filter");
-            spinner = (Spinner) mView.findViewById(R.id.spinnerDialog);
-            checkBoxFirstName = (CheckBox) mView.findViewById(R.id.checkBoxName);
-            checkBox1stLastName = (CheckBox) mView.findViewById(R.id.checkBox1stLastName);
-            String[] integers = {"3", "4", "5", "6", "7", "8"};
-        //    ArrayAdapter<String> adapterDialog = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-        //              integers);
-        //    adapterDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //    spinner.setAdapter(adapterDialog);
 
-       //     spinner.setSelection(prefs.getInt("FILTER_INT", 3) - 3);
-            checkBoxFirstName.setChecked(prefs.getBoolean("FILTER_FIRSTNAME", false));
-            checkBox1stLastName.setChecked(prefs.getBoolean("FILTER_LASTNAME", false));
+            popDialogBuilder.setView(mView);
+            AlertDialog alertDialog = popDialogBuilder.create();
+            //noinspection ConstantConditions
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show();
 
-            if ( checkBoxFirstName.isChecked() || checkBox1stLastName.isChecked()) {
-                spinner.setEnabled(false);
-            } else {
-                spinner.setEnabled(true);
+            spinnerMlb = mView.findViewById(R.id.spinnerMLB);
+            spinnerNfl = mView.findViewById(R.id.spinnerNFL);
+            spinnerNhl = mView.findViewById(R.id.spinnerNHL);
+            spinnerNba = mView.findViewById(R.id.spinnerNBA);
+
+
+            spinnerMlb.setSelection(prefs.getInt("MLBSPINNERINDEX", 0));
+            spinnerNfl.setSelection(prefs.getInt("NFLSPINNERINDEX", 0));
+            spinnerNhl.setSelection(prefs.getInt("NHLSPINNERINDEX", 0));
+            spinnerNba.setSelection(prefs.getInt("NBASPINNERINDEX", 0));
+
+
+            spinnerMlb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    if (i != 0) {
+
+                        Toast toast = Toast.makeText(MainActivity.this,
+                                spinnerMlb.getSelectedItem().toString(),
+                                Toast.LENGTH_SHORT);
+
+                        toast.setGravity(Gravity.BOTTOM, 0, -400);
+                        centerText(toast.getView());
+                        toast.show();
+
+                        prefs.edit().putString("MLBFAV", spinnerMlb.getSelectedItem().toString()).apply();
+                        prefs.edit().putInt("MLBSPINNERINDEX", i).apply();
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            spinnerNfl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    if (i != 0) {
+
+                        Toast toast = Toast.makeText(MainActivity.this,
+                                spinnerNfl.getSelectedItem().toString(),
+                                Toast.LENGTH_SHORT);
+
+
+                        toast.setGravity(Gravity.BOTTOM, 0, -400);
+                        centerText(toast.getView());
+                        toast.show();
+
+                        prefs.edit().putString("NFLFAV", spinnerNfl.getSelectedItem().toString()).apply();
+                        prefs.edit().putInt("NFLSPINNERINDEX", i).apply();
+
+                    }
+
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            spinnerNhl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    if (i != 0) {
+
+                        Toast toast = Toast.makeText(MainActivity.this,
+                                spinnerNhl.getSelectedItem().toString(),
+                                Toast.LENGTH_SHORT);
+
+                        toast.setGravity(Gravity.BOTTOM, 0, -400);
+                        centerText(toast.getView());
+                        toast.show();
+
+                        prefs.edit().putString("NHLFAV", spinnerNhl.getSelectedItem().toString()).apply();
+                        prefs.edit().putInt("NHLSPINNERINDEX", i).apply();
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            spinnerNba.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    if (i != 0) {
+
+                        Toast toast = Toast.makeText(MainActivity.this,
+                                spinnerNba.getSelectedItem().toString(),
+                                Toast.LENGTH_SHORT);
+
+
+                        toast.setGravity(Gravity.BOTTOM, 0, -400);
+                        centerText(toast.getView());
+                        toast.show();
+
+                        prefs.edit().putString("NBAFAV", spinnerNba.getSelectedItem().toString()).apply();
+                        prefs.edit().putInt("NBASPINNERINDEX", i).apply();
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+
+        }
+
+        if (id == R.id.settings) {
+
+
+            AlertDialog.Builder popDialogBuilder = new AlertDialog.Builder(this);
+            View mView = getLayoutInflater().inflate(R.layout.customdialogsettings, null);
+            //    popDialogBuilder.setIcon(R.mipmap.ic_launcher);
+            //    popDialogBuilder.setTitle("Characters for Filter");
+
+            Button clearHistory = mView.findViewById(R.id.buttonClearHistory);
+            clearHistory.setVisibility(View.GONE);
+
+            if (itemsHistory != null) {
+
+
+                clearHistory.setVisibility(View.VISIBLE);
+                clearHistory.setText(R.string.ch);
+
             }
 
 
-            checkBoxFirstName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            clearHistory.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onClick(View view) {
+                    itemsHistory.clear();
+                    spinnerAdapter.notifyDataSetChanged();
+                    editor = prefs.edit();
+                    editor.putString("SPORTSITEMS_HISTORY", "");
+                    editor.apply();
 
-                    if ( isChecked ) {
-                        checkBox1stLastName.setChecked(false);
-                        spinner.setEnabled(false);
-
-                    } else {
-                        spinner.setEnabled(true);
-                    }
                 }
             });
 
-            checkBox1stLastName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+            final Spinner spinnerFilter = mView.findViewById(R.id.spinnerFilterChar);
+
+            spinnerFilter.setSelection(prefs.getInt("FILTER_INT", 2) - 1  );
+
+            spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    if ( isChecked ) {
-                        checkBoxFirstName.setChecked(false);
-                        spinner.setEnabled(false);
+                    if (i >= 0) {
 
-                    } else {
-                        spinner.setEnabled(true);
+                        prefs.edit().putInt("FILTER_INT", i + 1).apply();
                     }
                 }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
             });
+
+            checkBoxAddFree = mView.findViewById(R.id.checkBoxAds);
+            checkBoxAddFree.setChecked(prefs.getBoolean("ADD_FREE", false));
+
+
 
             // Button OK
             popDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(@NonNull DialogInterface dialog, int which) {
 
-                    if ( checkBoxFirstName.isChecked()) {
+                    String toastString = null;
 
-                        Toast.makeText(MainActivity.this, "filter on first name",
-                                Toast.LENGTH_SHORT).show();
-                        editor.putBoolean("FILTER_FIRSTNAME", true);
-                        editor.putBoolean("FILTER_LASTNAME", false);
+                    editor = prefs.edit();
+
+                    if (checkBoxAddFree.isChecked()) {
+                        editor.putBoolean("ADD_FREE", true);
+                        editor.apply();
+                    } else {
+                        editor.putBoolean("ADD_FREE", false);
                         editor.commit();
-
-
-                    } else if ( checkBox1stLastName.isChecked()) {
-
-                        Toast.makeText(MainActivity.this, "filter on last name (1st letter)",
-                                Toast.LENGTH_SHORT).show();
-                        editor.putBoolean("FILTER_FIRSTNAME", false);
-                        editor.putBoolean("FILTER_LASTNAME", true);
-                        editor.commit();
-
-
-                    } else if ( spinner.isEnabled()){
-
-                        Toast.makeText(MainActivity.this,
-                                spinner.getSelectedItem().toString() + " character filter",
-                                Toast.LENGTH_SHORT).show();
-                        editor.putBoolean("FILTER_FIRSTNAME", false);
-                        editor.putBoolean("FILTER_LASTNAME", false);
-
-                        Integer selected = Integer.parseInt(spinner.getSelectedItem().toString());
-
-                        try {
-                            editor.putInt("FILTER_INT", selected);
-                        } catch (Exception e) {
-                            editor.putInt("FILTER_INT", 3);
-                            e.printStackTrace();
-                        }
-                        editor.commit();
-
-
                     }
+
+
+
+                    if (checkBoxAddFree.isChecked()) {
+                        toastString = spinnerFilter.getSelectedItem().toString() + " characters for filter" +
+                                "\n(no Ads)";
+                    } else {
+                        toastString = spinnerFilter.getSelectedItem().toString() + " characters for filter";
+                    }
+
+                    Toast toast = Toast.makeText(MainActivity.this,
+                            toastString,
+                            Toast.LENGTH_SHORT);
+
+                    toast.setGravity(Gravity.BOTTOM, 0, -800);
+                    centerText(toast.getView());
+                    toast.show();
+
 
                     dialog.dismiss();
                 }
@@ -300,7 +471,7 @@ public class MainActivity extends AppCompatActivity {
 
             popDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(@NonNull DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
@@ -308,12 +479,13 @@ public class MainActivity extends AppCompatActivity {
 
             popDialogBuilder.setView(mView);
             AlertDialog alertDialog = popDialogBuilder.create();
+            //noinspection ConstantConditions
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             alertDialog.show();
 
-            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE  );
 
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE);
 
 
         }
@@ -328,30 +500,135 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @SuppressWarnings("unchecked")
     protected void onResume() {
         super.onResume();
-        getPrefs();
 
-        Gson gson = new Gson();
-        itemsNamesHistory = gson.fromJson(prefs.getString("NAMES_HISTORY_GSON", ""), ArrayList.class);
-        itemsLinksHistory = gson.fromJson(prefs.getString("LINKS_HISTORY_GSON", ""), ArrayList.class);
         try {
-            dataAdapter.notifyDataSetChanged();
+            spinnerAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if (fadePopup != null) {
+            fadePopup.dismiss();
+        }
+
+
         //...Now update your objects with preference values
     }
 
-    private void getPrefs() {
-        prefs = this.getSharedPreferences(
-                "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE);
-
-
-
+    private void centerText(View view) {
+        if (view instanceof TextView) {
+            ((TextView) view).setGravity(Gravity.CENTER);
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            int n = group.getChildCount();
+            for (int i = 0; i < n; i++) {
+                centerText(group.getChildAt(i));
+            }
+        }
     }
 
+    private void dimBackground() {
+
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater != null ? inflater.inflate(R.layout.fadepopup,
+                (ViewGroup) findViewById(R.id.fadePopup)) : null;
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        fadePopup = new PopupWindow(layout, dm.widthPixels, dm.heightPixels, false);
+        fadePopup.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
+    }
+
+
+    class MySpinnerAdapter extends BaseAdapter {
+
+        final Context context;
+        final ArrayList<SportsItem> itemsHistory;
+
+        MySpinnerAdapter(Context context, ArrayList<SportsItem> itemsHistory) {
+            this.context = context;
+            this.itemsHistory = itemsHistory;
+        }
+
+        @Override
+        public int getCount() {
+            return (itemsHistory == null) ? 0 : itemsHistory.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return itemsHistory.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                assert inflater != null;
+                view = inflater.inflate(R.layout.itemlayouthistory, viewGroup, false);
+            }
+            SportsItem sportsItem = itemsHistory.get(i);
+
+            TextView txtName = view.findViewById(R.id.textViewName);
+            TextView txtSeasons = view.findViewById(R.id.textViewSeasons);
+            TextView txtType = view.findViewById(R.id.textViewType);
+       //     ImageView imgView = view.findViewById(R.id.imageViewIcon);
+
+
+            txtName.setText(sportsItem.getName());
+            if (sportsItem.getType().equals("player") || sportsItem.getType().equals("team")
+                    || sportsItem.getType().equals("school") || sportsItem.getType().equals("")) {
+                txtType.setVisibility(View.GONE);
+            } else {
+                txtType.setVisibility(View.VISIBLE);
+                txtType.setText(sportsItem.getType());
+            }
+
+            txtSeasons.setText(sportsItem.getSeasons());
+
+
+            try {
+                if (Objects.equals(sportsItem.getSeasons(), "")) {
+                    txtSeasons.setVisibility(View.GONE);
+                } else {
+                    txtSeasons.setVisibility(View.VISIBLE);
+                    txtSeasons.setText(sportsItem.getSeasons());
+                    txtSeasons.setTextSize(12);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+       /*     if (sportsItem.getLink().contains("football")) {
+                imgView.setImageResource(R.drawable.football_icon_new2);
+            } else if (sportsItem.getLink().contains("baseball")) {
+                imgView.setImageResource(R.drawable.baseball_icon_new2);
+            } else if (sportsItem.getLink().contains("basketball")) {
+                imgView.setImageResource(R.drawable.basketball_icon_new2);
+            } else if (sportsItem.getLink().contains("hockey")) {
+                imgView.setImageResource(R.drawable.hockey_icon_new2);
+            } else if (sportsItem.getLink().contains("cfb")) {
+                imgView.setImageResource(R.drawable.collegefootball_icon_new2);
+            } else {
+                imgView.setImageResource(R.drawable.collegebasketball_icon_new2);
+            }
+*/
+
+            return view;
+        }
+
+    }
 
 
 

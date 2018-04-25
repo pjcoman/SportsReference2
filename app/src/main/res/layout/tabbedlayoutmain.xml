@@ -11,34 +11,33 @@
         android:id="@+id/simpleTabLayout"
         style="@android:style/Widget.TabWidget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="?attr/colorButtonNormal"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/cardview_light_background"
+        app:tabBackground="@color/blackhalftransparent"
         app:tabIndicatorColor="#f00"
         app:tabSelectedTextColor="#f00"
         app:tabTextColor="#000" />
 
 
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/simpleViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="5">
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/simpleViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4.4"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </android.support.v4.view.ViewPager>
 
-        </android.support.v4.view.ViewPager>
-
-        <Spinner
-            android:id="@+id/spinnerHistory"
-            style="@android:style/Widget.Spinner.DropDown"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".6" />
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/spinnerHistory"
+        style="@android:style/TextAppearance.DeviceDefault.Large.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:popupBackground="@color/blackhalftransparent"
+        android:visibility="gone" />
 
 </LinearLayout>

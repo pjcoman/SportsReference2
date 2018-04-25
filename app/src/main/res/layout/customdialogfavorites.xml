@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+    android:background="@drawable/dialog_bg_black"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/back"
+        android:gravity="center_horizontal"
+        android:text="@string/mytems"
+        android:textAlignment="center"
+        android:textColor="#e9e6e6"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/spinnerMLB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:entries="@array/mlbteams" />
+
+    <Spinner
+        android:id="@+id/spinnerNFL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:entries="@array/nflteams" />
+
+    <Spinner
+        android:id="@+id/spinnerNHL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:entries="@array/nhlteams" />
+
+    <Spinner
+        android:id="@+id/spinnerNBA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:entries="@array/nbateams" />
+
+
+</LinearLayout>

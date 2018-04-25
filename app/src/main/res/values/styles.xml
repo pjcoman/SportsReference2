@@ -1,22 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <item name="android:windowTransitionBackgroundFadeDuration" tools:targetApi="lollipop">2000</item>
-        <item name="android:windowBackground">@android:color/black</item>
 
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="mySpinnerItemStyle" parent="android:Widget.DeviceDefault.Spinner">
+        <item name="android:textColor">@color/blackhalftransparent</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
 
     <style name="AppTheme.PopUp" parent="AppTheme.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
@@ -24,6 +27,10 @@
 
 
     </style>
+
+
+
+
 
     <style name="MyTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>

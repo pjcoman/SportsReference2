@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-    <WebView
-             android:id="@+id/webview1"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
-    </WebView>
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
 
-    <Button
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:onClick="close (WebView)"
-        android:layout_gravity="center_horizontal"
+        <WebView
+            android:id="@+id/webview1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
 
-        android:layout_alignParentRight="false"
-        android:background="@drawable/clearx"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="20dp"
-        android:layout_height="30dp"
-        android:layout_width="30dp"
-        android:id="@+id/closeButton"
-        android:visibility="gone" />
+        </WebView>
+    </LinearLayout>
 
 </RelativeLayout>

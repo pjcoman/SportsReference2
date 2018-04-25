@@ -2,15 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fansbackground"
+    android:padding="10dp"
     tools:context="comapps.com.sportsreference2.NorthAmericaFragment">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/wallpaper"
         android:orientation="vertical"
-        tools:context=".SRActivity"
-        android:padding="2dp">
+        tools:context=".SRActivity">
 
 
         <LinearLayout
@@ -18,35 +18,78 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="8dp"
             android:weightSum="2">
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button1"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/baseball_icon"
+                android:src="@drawable/baseballreftitlebar"
                 android:visibility="visible" />
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button2"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/football_icon"
-                android:visibility="visible"/>
+                android:src="@drawable/footballreftitlebar"
+                android:visibility="visible" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="false"
+                android:background="@drawable/back"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/swipe_instructions"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/checkBoxInstructions"
+                style="@android:style/Widget.CompoundButton.CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/back"
+                android:checked="true"
+                android:padding="10dp"
+                android:text="@string/show"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
 
 
         <LinearLayout
@@ -54,35 +97,36 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="8dp"
             android:weightSum="2">
 
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button3"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/hockey_icon"
-                android:visibility="visible"/>
+                android:src="@drawable/hockeyreftitlebar"
+                android:visibility="visible" />
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button4"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/basketball_icon"
-                android:visibility="visible"/>
+                android:src="@drawable/basketballreftitlebar"
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -92,47 +136,52 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:orientation="horizontal"
-            android:padding="8dp"
 
             >
 
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button5"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/collegefootball_icon"
-                android:visibility="visible"/>
+                android:src="@drawable/collegefootballreftitlebar"
+                android:visibility="visible" />
 
-            <comapps.com.sportsreference2.CustomImageView
+            <ImageButton
                 android:id="@+id/button6"
-                style="?android:attr/buttonBarStyle"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:padding="0dp"
+                android:background="@drawable/layout_rounded_corners_blacktogray"
+                android:padding="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/collegebasketball_icon"
-                android:visibility="visible"/>
+                android:src="@drawable/collegebasketballreftitlebar"
+                android:visibility="visible" />
+            <!--
 
-            <comapps.com.sportsreference2.CustomImageView
+            <Button
+                android:id="@+id/button7"
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/olympicsreftitlebar"
-                android:visibility="gone"/>
+                android:background="@drawable/googleg_standard_color_18"
+                android:onClick="S"
+                android:scaleType="centerCrop"
+                android:visibility="visible" />
+-->
 
 
         </LinearLayout>
@@ -150,7 +199,7 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 
 </FrameLayout>

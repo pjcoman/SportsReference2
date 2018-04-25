@@ -1,9 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-   <!-- <item android:id="@+id/addplayer" android:title="add player"
-          android:orderInCategory="101" app:showAsAction="never" />-->
-    <item android:id="@+id/settings" android:title="settings"
-        android:orderInCategory="101" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <!-- <item android:id="@+id/addplayer" android:title="add player"
+           android:orderInCategory="101" app:showAsAction="never" />-->
+    <item
+        android:id="@+id/settings"
+        android:title="settings"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/myteams"
+        android:title="favorites"
+        android:orderInCategory="102"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/loadData"
+        android:title="load items"
+        android:orderInCategory="103"
+        app:showAsAction="never" />
 
 </menu>

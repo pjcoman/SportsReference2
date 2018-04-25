@@ -1,6 +1,7 @@
 package comapps.com.sportsreference2;
 
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,8 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by me on 3/21/2017.
  */
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+class PagerAdapter extends FragmentStatePagerAdapter {
+    private final int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -19,16 +20,15 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
+    @Nullable
     @Override
     public Fragment getItem(int position) {
 
         switch (position) {
             case 0:
-                NorthAmericaFragment tab1 = new NorthAmericaFragment();
-                return tab1;
+                return new NorthAmericaFragment();
             case 1:
-                WorldFragment tab2 = new WorldFragment();
-                return tab2;
+                return new WorldFragment();
 
             default:
                 return null;

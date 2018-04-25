@@ -1,0 +1,77 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="bb"
+        android:enabled="true"
+        android:icon="@mipmap/bb_icon"
+        android:shortcutShortLabel="@string/mlb"
+        android:shortcutLongLabel="@string/mlb">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="comapps.com.sportsreference2"
+            android:targetClass="comapps.com.sportsreference2.SportsItemActivityKotlin"
+
+        />
+
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="hk"
+        android:enabled="true"
+        android:icon="@mipmap/hk_icon"
+        android:shortcutShortLabel="@string/nhl"
+        android:shortcutLongLabel="@string/nhl">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="comapps.com.sportsreference2"
+            android:targetClass="comapps.com.sportsreference2.SportsItemActivityKotlin"
+
+        />
+
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="bk"
+        android:enabled="true"
+        android:icon="@mipmap/bk_icon"
+        android:shortcutShortLabel="@string/nba"
+        android:shortcutLongLabel="@string/nba">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="comapps.com.sportsreference2"
+            android:targetClass="comapps.com.sportsreference2.SportsItemActivityKotlin"
+       />
+
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="fb"
+        android:enabled="true"
+        android:icon="@mipmap/fb_icon"
+        android:shortcutShortLabel="@string/nfl"
+        android:shortcutLongLabel="@string/nfl">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="comapps.com.sportsreference2"
+            android:targetClass="comapps.com.sportsreference2.SportsItemActivityKotlin"
+
+        />
+
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

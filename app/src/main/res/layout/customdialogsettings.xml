@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+    android:background="@android:color/black"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/textTitleSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/back"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:text="@string/filter"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+
+    <Spinner
+        android:id="@+id/spinnerFilterChar"
+        style="@android:style/TextAppearance.Widget.TextView.SpinnerItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:entries="@array/integers" />
+
+    <CheckBox
+        android:id="@+id/checkBoxAds"
+        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="3dp"
+        android:checked="false"
+        android:elevation="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/ad_free_javascript_disabled"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
+
+    <Button
+        android:id="@+id/buttonClearHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:background="@drawable/back"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/button"
+        tools:text="CLEAR HISTORY" />
+</LinearLayout>
