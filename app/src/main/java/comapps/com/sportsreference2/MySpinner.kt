@@ -3,10 +3,9 @@ package comapps.com.sportsreference2
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.widget.Spinner
 
 
-internal class MySpinner : Spinner {
+internal class MySpinner : android.support.v7.widget.AppCompatSpinner {
 
 
     constructor(context: Context) : super(context) {

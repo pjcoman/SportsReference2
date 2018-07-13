@@ -42,10 +42,11 @@
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.2.40/5f124db1c11af4500eee2313ab4092f1c3f3f304/kotlin-android-extensions-1.2.40.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-annotation-processing-gradle/1.2.40/e5c56f911827d8bad91d1dda7e1adf00960a2e5d/kotlin-annotation-processing-gradle-1.2.40.jar" />
+              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.2.51/1755c607e5fabf4ba949ef626c73fc7421d35123/kotlin-android-extensions-1.2.51.jar" />
+              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-annotation-processing-gradle/1.2.51/8cd0f527d68195e3c008302744ad319d24499cd7/kotlin-annotation-processing-gradle-1.2.51.jar" />
             </array>
           </option>
+          <option name="coroutinesState" value="enable" />
         </compilerArguments>
       </configuration>
     </facet>
@@ -119,6 +120,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/build-info" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/builds" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/data-binding" />
@@ -153,102 +155,116 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.result:result:1.3.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-core-16.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.artemzin.rxjava:proguard-rules-1.3.3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-database-3.2.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-media-compat-27.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-design-coroutines:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.databinding:adapters-3.1.3" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp:okhttp:2.7.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton.rxbinding:rxbinding-kotlin-0.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.databinding:adapters-3.1.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-base-license-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement-license-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-fragment-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:runtime-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-support-v4-commons:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:design-27.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-core:1.8.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support:multidex-instrumentation-1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.jaredrummler:material-spinner-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.pwittchen:swipe-rx2-0.3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-storage-3.2.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-impl-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.databinding:library-3.1.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-connection-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-support-v4:0.10.4@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-15.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.databinding:library-3.1.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-impl-16.1.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:transition-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-base-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-firestore-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-impl-license-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:cardview-v7-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.51@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel-gson:1.12.1@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-core-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.2@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.2.51@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel:1.12.1@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-sdk25:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-1.1.0-beta3" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-license-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.databinding:baseLibrary:3.1.2@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-identifier-15.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-measurement-connector-impl-16.0.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:extensions-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:common:1.1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide:4.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-license-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:gifdecoder:4.4.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:percent-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-stats-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:0.15@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-appcompat-v7-coroutines:0.10.4@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-connection-16.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:protolite-well-known-types-15.0.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:common:1.1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton.rxbinding:rxbinding-0.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.opencensus:opencensus-contrib-grpc-metrics:0.8.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-protobuf-lite:1.8.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-base-16.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex:rxkotlin:0.55.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:customtabs-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-common-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-connection-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-16.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:recyclerview-v7-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:multidex-1.0.3" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex:rxandroid-1.2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-sdk25-coroutines:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.1.4@jar" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-stub:1.8.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-firestore-17.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-context:1.8.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-common-16.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-commons:0.10.4@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-solver:1.1.2@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-16.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-auth-3.2.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.6.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.2.40@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-lite:3.0.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-common-3.2.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.opencensus:opencensus-api:0.8.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.9@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.40@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-common-license-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-appcompat-v7:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.salomonbrys.kotson:kotson:2.5.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-appcompat-v7-commons:0.10.4@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-storage-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.40@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.10.3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-16.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.51@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.15@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.databinding:baseLibrary:3.1.3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-interop-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-firestore-3.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-measurement-connector-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.4.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-11.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-solver:1.1.0-beta3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-11.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.grpc:grpc-okhttp:1.8.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.anko:anko-sdk15-coroutines:0.10.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-license-11.8.0" level="project" />
   </component>

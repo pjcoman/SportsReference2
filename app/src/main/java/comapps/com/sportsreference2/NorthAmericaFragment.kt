@@ -86,7 +86,7 @@ class NorthAmericaFragment : Fragment() {
             //        getActivity().finish();
             try {
                 activity!!.overridePendingTransition(R.anim.pushinfromleft, R.anim.pushouttoright)
-            //    activity!!.finish()
+                //    activity!!.finish()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -129,7 +129,7 @@ class NorthAmericaFragment : Fragment() {
             startActivity(intentfootballsearch)
             //    getActivity().finish();
             try {
-                activity!!.overridePendingTransition(R.anim.pushinfromright, R.anim.pushouttoleft)
+                activity!!.overridePendingTransition(R.anim.pushinfromleft, R.anim.pushouttoright)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -210,7 +210,7 @@ class NorthAmericaFragment : Fragment() {
             startActivity(intentbasketballsearch)
             //       getActivity().finish();
             try {
-                activity!!.overridePendingTransition(R.anim.pushinfromright, R.anim.pushouttoleft)
+                activity!!.overridePendingTransition(R.anim.pushinfromleft, R.anim.pushouttoright)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -264,11 +264,11 @@ class NorthAmericaFragment : Fragment() {
             intentcollegebasketballsearch.putExtra("sport", "college_basketball")
             startActivity(intentcollegebasketballsearch)
             //         getActivity().finish();
-          /*  try {
-                activity!!.overridePendingTransition(R.anim.pushinfromright, R.anim.pushouttoleft)
+            try {
+                activity!!.overridePendingTransition(R.anim.pushinfromleft, R.anim.pushouttoright)
             } catch (e: Exception) {
                 e.printStackTrace()
-            }*/
+            }
         }
 
         /* testbutton.setOnClickListener(

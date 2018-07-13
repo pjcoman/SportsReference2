@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 /**
  * Created by me on 3/14/2018.
  */
-class Prefs (context: Context) {
+class Prefs(context: Context) {
     private val PREFS_FILENAME = "comapps.com.sportsreference2.prefs"
     private val SPORTS_ITEM_HISTORY = "sih"
     private val BB_ITEMS = "bbi"
@@ -19,7 +19,7 @@ class Prefs (context: Context) {
     private val NHLFAVSPIN = "nhl_spin"
     private val NBAFAVSPIN = "nba_spin"
     private val NFLFAVSPIN = "nfl_spin"
-    private val FILTER_INT = "filter_integer"
+    private val TIMER_INT = "timer_integer"
     private val ADD_FREE = "add_free"
     private val SHOW_INSTRUCTIONS = "show_instructions"
 
@@ -63,9 +63,9 @@ class Prefs (context: Context) {
         get() = prefs.getInt(NFLFAVSPIN, 0)
         set(value) = prefs.edit().putInt(NFLFAVSPIN, value).apply()
 
-    var filterInt: Int
-        get() = prefs.getInt(FILTER_INT, 4)
-        set(value) = prefs.edit().putInt(FILTER_INT, value).apply()
+    var timerInt: Int
+        get() = prefs.getInt(TIMER_INT, 4)
+        set(value) = prefs.edit().putInt(TIMER_INT, value).apply()
 
     var addFree: Boolean
         get() = prefs.getBoolean(ADD_FREE, false)

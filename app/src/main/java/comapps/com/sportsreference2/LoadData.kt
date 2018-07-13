@@ -19,7 +19,6 @@ import java.net.URL
 class LoadData : AppCompatActivity() {
 
 
-
     private var databaseReferenceSport: DatabaseReference? = null
 
     private lateinit var links: ArrayList<String>
@@ -48,7 +47,7 @@ class LoadData : AppCompatActivity() {
         loadButton.isEnabled.not()
 
 
-        var itemCount:Int
+        var itemCount: Int
 
         links = ArrayList()
         keys = ArrayList()
@@ -62,14 +61,14 @@ class LoadData : AppCompatActivity() {
         sportsCategoriesSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>, view: View, arg2: Int, arg3: Long) {
 
-                if ( arg2 != 0 ) {
+                if (arg2 != 0) {
 
                     sport = sportsCategoriesSpinner!!.selectedItem.toString()
 
                     Toast.makeText(applicationContext, sport,
                             Toast.LENGTH_SHORT).show()
 
-                    databaseReferenceSport = FirebaseDatabase.getInstance().reference.child(sport)
+                    databaseReferenceSport = FirebaseDatabase.getInstance().reference.child(sport!!)
 
 
                     itemsKeyToObjectMap = HashMap()
@@ -77,13 +76,15 @@ class LoadData : AppCompatActivity() {
 
 
                     databaseReferenceSport!!.addListenerForSingleValueEvent(object : ValueEventListener {
+
+
                         override fun onCancelled(databaseError: DatabaseError) {
                             println(databaseError.message)
                         }
 
-                        override fun onDataChange(snapshot: DataSnapshot?) {
-                            val children = snapshot!!.children
-                            val dbSize = snapshot.childrenCount
+                        override fun onDataChange(p0: DataSnapshot) {
+                            val children = p0!!.children
+                            val dbSize = p0.childrenCount
 
                             itemCount = 1
 
@@ -91,74 +92,24 @@ class LoadData : AppCompatActivity() {
                             children.forEach {
 
                                 val sportsItem = it.getValue(SportsItem::class.java)
-                                sportsItem?.let { it1 -> itemsKeyToObjectMap.put(it.key, it1) }
-
-                  //              println(message = "${it.key} ${itemsKeyToObjectMap.get(it.key)} count $itemCount")
+                                sportsItem?.let { it1 -> itemsKeyToObjectMap.put(it.key.toString(), it1) }
 
 
                                 sportsItem?.link?.let { it1 -> links.add(it1) }
                                 itemCount++
 
-                                val name: String? = sportsItem?.name
-                        //        val key: String? = it.key
-
-                        //        val splitToRemovePos = name!!.split("()")
-                        //        println(name)
-
-                                val type: String? = sportsItem?.type
-
-                                  if ( sportsItem!!.seasons.contains("player",ignoreCase = false)){
-                                    databaseReferenceSport!!.child(it.key).child("seasons").setValue(type)
-                                      databaseReferenceSport!!.child(it.key).child("type").setValue("player")
-                                    println(message = "item removed $it.key | $sportsItem |")
-                                }
-
-                              /*  try {
-                                    databaseReferenceSport!!.child(it.key).child("position").setValue(splitToRemovePos[1])
-                                } catch (e: Exception) {
-                                    println("no position on item")
-                                }
-                                try {
-                                    databaseReferenceSport!!.child(it.key).child("name").setValue(splitToRemovePos[0])
-                                } catch (e: Exception) {
-                                }*/
-
-/*
-
-                                      if (sportsItem.name.length == 0) {
-                                          databaseReferenceSport!!.child(key).removeValue()
-                                      }
-*/
-
-                           //     val splitName = sportsItem?.name!!.split("()")
-
-                              /*  try {
-                                    println("splitname ----> $splitName")
-                                    databaseReferenceSport!!.child(it.key).child("position").setValue(splitName.get(1))
-                                    databaseReferenceSport!!.child(it.key).child("name")
-                                            .setValue(splitName.get(0))
-
-
-
-                                } catch (e: Exception) {
-                                }*/
-
-                                //       links.add(link!!)
-
-                                }
-
-                            loadButton.isEnabled
 
                             }
 
+                            loadButton.isEnabled
 
+                        }
 
 
                     })
                 }
 
             }
-
 
 
             override fun onNothingSelected(arg0: AdapterView<*>) {
@@ -182,11 +133,9 @@ class LoadData : AppCompatActivity() {
 
             try {
 
-                itemsToLoadStream = applicationContext.assets.open("itemstoload.txt").
-                        bufferedReader().use {
+                itemsToLoadStream = applicationContext.assets.open("itemstoload.txt").bufferedReader().use {
                     it.readText()
                 }
-
 
 
             } catch (e: IOException) {
@@ -194,7 +143,7 @@ class LoadData : AppCompatActivity() {
                 e.printStackTrace()
             }
 
-      //        println("$itemsToLoadStream")
+            //        println("$itemsToLoadStream")
 
             val itemsToLoadTypedArray = itemsToLoadStream?.split("\n".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
 
@@ -205,25 +154,22 @@ class LoadData : AppCompatActivity() {
                 val itemFields = itemsToLoadTypedArray[i].split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
 
-
-                val sportsItem = SportsItem(itemFields[0], itemFields[1], itemFields[2], itemFields[3],
-                        itemFields[4])
+                val sportsItem = SportsItem(itemFields[0], itemFields[1], itemFields[2], itemFields[3])
                 println("sportsItem.name = ${sportsItem.name}")
                 println("sportsItem.link = ${sportsItem.link}")
-                println("sportsItem.seasons = ${sportsItem.seasons}")
                 println("sportsItem.type = ${sportsItem.type}")
                 println("sportsItem.position = ${sportsItem.position}")
 
-                    if (links.contains(sportsItem.link)){
+                if (links.contains(sportsItem.link)) {
 
-                      println("already in db = ${sportsItem.name}")
+                    println("already in db = ${sportsItem.name}")
 
-                    } else {
+                } else {
 
-                        databaseReferenceSport?.push()?.setValue(sportsItem)
-                    }
+                    databaseReferenceSport?.push()?.setValue(sportsItem)
+                }
 
-            //
+                //
 
             }
             //*****************************************************************************************************************************************

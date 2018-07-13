@@ -26,6 +26,4 @@ class MApplication : Application() {
     }
 
 
-
-
 }

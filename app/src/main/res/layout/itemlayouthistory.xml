@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="right"
+    android:gravity="end"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
 
     <TextView
-        android:id="@+id/textViewName"
+        android:id="@+id/textViewNameHistory"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="@string/name"
         android:textColor="@color/cardview_light_background"
         android:textSize="14sp" />
 
@@ -28,33 +27,28 @@
         android:paddingRight="5dp">
 
         <TextView
-            android:id="@+id/textViewType"
+            android:id="@+id/textViewTypeHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:gravity="center"
-            android:text="@string/type"
             android:textColor="@color/cardview_light_background"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/textViewSeasons"
+            android:id="@+id/textViewSeasonsHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:gravity="center"
-            android:text="@string/_1999_2000"
             android:textColor="@color/cardview_light_background"
             android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageViewIcon"
+        android:id="@+id/imageViewIconHistory"
         android:layout_width="40dp"
         android:layout_height="40dp"
-
         android:layout_gravity="center"
         android:contentDescription="@string/icon"
-        app:srcCompat="@drawable/baseball_icon_new" />
+        />
 
 </LinearLayout>

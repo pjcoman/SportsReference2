@@ -5,7 +5,6 @@ import android.content.SharedPreferences.Editor
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
-import java.util.*
 
 /**
  * Created by me on 8/29/2017.

@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearlayoutsi"
+    android:id="@+id/framelayoutsi"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false"
-    android:focusableInTouchMode="false"
-    android:focusedByDefault="true"
-    android:orientation="vertical"
-    android:padding="2dp"
-    tools:targetApi="o">
+    android:orientation="vertical">
+
+
+
+    <android.support.constraint.ConstraintLayout android:id="@+id/constraintlayoutsi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:orientation="vertical">
 
 
     <EditText
-        android:id="@+id/searchtext"
+        android:id="@+id/searchText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:background="@drawable/layout_rounded_corners_white"
         android:cursorVisible="true"
         android:dropDownWidth="match_parent"
@@ -29,45 +32,59 @@
         android:padding="10dp"
         android:popupBackground="#83ffffff"
         android:textColor="@android:color/black"
-        android:textColorHint="#8AFFFFFF"
-        android:textSize="18sp" />
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textViewCount"
-            android:layout_width="wrap_content"
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sportsItemRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:visibility="invisible" />
+            android:layout_gravity="center_horizontal"
+            android:focusableInTouchMode="false"
+            android:foregroundGravity="center_horizontal"
+            android:paddingBottom="60dp"
+            android:paddingTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchText">
 
-    </RelativeLayout>
+        </android.support.v7.widget.RecyclerView>
 
-    <ProgressBar
-        android:id="@+id/progressBarLoad"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="20dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/sportsItemRecyclerView"
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:focusableInTouchMode="false"
-        android:foregroundGravity="center_horizontal"
-        android:padding="5dp" />
+        android:layout_margin="4dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/progressB"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:clickable="false"
+            android:max="100"
+            android:progress="0"
+            android:secondaryProgress="100"
+            android:visibility="visible">
+
+        </ProgressBar>
+    </LinearLayout>
 
 
-</LinearLayout>
+
+
+</FrameLayout>

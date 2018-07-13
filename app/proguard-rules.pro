@@ -23,4 +23,9 @@
 -keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
 -keepclassmembers class comapps.com.sportsreference2.** { *; }
 -keepclassmembers class rx.internal.util.unsafe.** { *; }
+-ignorewarnings
 
+-keep class * {
+    public private *;
+
+}

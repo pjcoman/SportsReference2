@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="edittext_hint"><font size="14">long click clears</font></string>
+    <string
+        name="edittext_hint">first and last for college</string>
+    <string
+        name="edittext_hint2">press for clear</string>
+    <string
+        name="edittext_hint3">name/country/club or year i.e 2014 </string>
 
     <string name="app_name">Sports Reference</string>
     <string name="name">Name</string>
     <string name="seasons">1111–1111</string>
     <string name="type">type</string>
-    <string name="swipe_instructions">Swipe to switch sports.  Long press for favorites in settings.</string>
+    <string name="swipe_instructions">Long press for favorites and timer in settings.</string>
     <string name="don_t_show">don\'t show</string>
     <string name="show">show instructions</string>
     <string name="mlb">Baseball</string>
@@ -24,6 +29,10 @@
         <item>basketball</item>
         <item>college_football</item>
         <item>college_basketball</item>
+        <item>soccer</item>
+        <item>soccer_clubs</item>
+        <item>soccer_leagues</item>
+        <item>soccer_wc</item>
     </string-array>
 
     <string-array name="sportsSpinner">
@@ -34,17 +43,19 @@
         <item>basketball</item>
         <item>college_football</item>
         <item>college_basketball</item>
+        <item>soccer</item>
+        <item>soccer_clubs</item>
+        <item>soccer_leagues</item>
+        <item>soccer_wc</item>
     </string-array>
 
     <string-array name="integers">
         <item>FILTER</item>
         <item>2</item>
-         <item>3</item>
+        <item>3</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>
-        <item>7</item>
-        <item>8</item>
     </string-array>
 
 
@@ -359,7 +370,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="first_letter_last_name">1st Name + \" \" +\n1st Letter\nLast Name</string>
-    <string name="filter">Filter Characters</string>
+    <string name="timer">Seconds till Auto-Enter</string>
     <string name="first_name_first_blank">1st Name + \" \"</string>
 
     <string name="history">History</string>
@@ -380,6 +391,9 @@
     <string name="total_links">links</string>
 
     <string name="_1999_2000">1999–2000</string>
+    <string name="sportbackground">sportbackground</string>
+    <string name="percentLoad">0%</string>
+    <string name="halftransparent">halftransparent</string>
 
 
 </resources>
