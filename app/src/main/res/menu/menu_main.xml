@@ -5,21 +5,24 @@
     <!-- <item android:id="@+id/addplayer" android:title="add player"
            android:orderInCategory="101" app:showAsAction="never" />-->
     <item
-        android:id="@+id/settings"
-        android:title="settings"
-        android:orderInCategory="101"
-        app:showAsAction="never" />
+        android:id = "@+id/settings"
+        android:orderInCategory = "101"
+        android:title = "@string/settings"
+        app:showAsAction = "never" />
+
 
     <item
-        android:id="@+id/myteams"
-        android:title="favorites"
-        android:orderInCategory="102"
-        app:showAsAction="never" />
+        android:id = "@+id/searchBarLayout"
+        android:orderInCategory = "102"
+        android:title = "@string/sbb"
+        app:showAsAction = "never" />
 
-    <item
-        android:id="@+id/loadData"
-        android:title="load items"
-        android:orderInCategory="103"
-        app:showAsAction="never" />
+
+    <!-- <item
+          android:id="@+id/loadData"
+          android:title="load items"
+          android:orderInCategory="103"
+          app:showAsAction="never" />-->
+
 
 </menu>

@@ -1,9 +1,8 @@
 package comapps.com.sportsreference2
 
-import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -18,36 +17,64 @@ import android.view.*
 import android.widget.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.itemlayoutrecycler_constraint.view.*
-import java.util.*
+
+
+
+
+
+
+
 
 /**
- * Created by me on 3/21/2017.
+ *
+ *
+ *
+ *
+ *
+ *
  */
+
+  // If not then our app is not on the foreground.
+
+
+
+
 
 class MainActivityKotlin : AppCompatActivity() {
 
-    private lateinit var viewPager: ViewPager
-    private var itemsHistory: ArrayList<SportsItem>? = ArrayList()
+    private val TAG = "MAKOTLIN"
+
+    private var viewPager: ViewPager? = null
+    private var itemsHistory = ArrayList<SportsItem>()
     private val type = object : TypeToken<java.util.ArrayList<SportsItem>>() {}.type
     private var spinnerHistoryAdapter: HistorySpinnerAdapter? = null
-    private var checkBoxAddFree: CheckBox? = null
-    private var spinnerMlb: Spinner? = null
-    private var spinnerNfl: Spinner? = null
-    private var spinnerNhl: Spinner? = null
-    private var spinnerNba: Spinner? = null
+    private var spinnerCountFilterAdapter: ItemSpinnerAdapter? = null
+    private var spinnerMLBAdapter: ItemSpinnerAdapter? = null
+    private var spinnerNFLAdapter: ItemSpinnerAdapter? = null
+    private var spinnerNHLAdapter: ItemSpinnerAdapter? = null
+    private var spinnerNBAAdapter: ItemSpinnerAdapter? = null
 
+
+    private var spinnerMLB: Spinner? = null
+    private var spinnerNFL: Spinner? = null
+    private var spinnerNHL: Spinner? = null
+    private var spinnerNBA: Spinner? = null
+    private var spinnerFilterCount: Spinner? = null
     private var spinnerHistory: Spinner? = null
 
     private var userIsInteracting: Boolean = false
 
     private var loaded = false
 
+    private var adapter: PagerAdapter? = null
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tabbedlayoutmain)
 
-        spinnerHistory = findViewById(R.id.spinnerHistory) as Spinner
+        spinnerHistory = findViewById(R.id.spinnerHistory)
 
         viewPager = findViewById(R.id.simpleViewPager)
         val tabLayout = findViewById<TabLayout>(R.id.simpleTabLayout)
@@ -79,19 +106,12 @@ class MainActivityKotlin : AppCompatActivity() {
             tabLayout.getTabAt(i)!!.customView = imageView
         }
 
-        /*   for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            if (tab != null) tab.setCustomView(R.layout.tabiconlayout);
-        }*/
-
-        /*  prefs = this.getSharedPreferences(
-                  "comapps.com.thenewsportsreference.app", Context.MODE_PRIVATE)*/
 
 
-        val adapter = PagerAdapter(supportFragmentManager, tabLayout.tabCount)
-        viewPager.adapter = adapter
+        adapter = PagerAdapter(supportFragmentManager, tabLayout.tabCount)
+        viewPager!!.adapter = adapter
 
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
 
@@ -99,7 +119,7 @@ class MainActivityKotlin : AppCompatActivity() {
 
                 //THIS!!
 
-                viewPager.currentItem = tab.position
+                viewPager!!.currentItem = tab.position
 
 
             }
@@ -113,19 +133,23 @@ class MainActivityKotlin : AppCompatActivity() {
             }
         })
 
-        itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sih, type)
 
-        if (itemsHistory != null) {
             loadHistory()
-        }
+
 
 
     }
 
+    //****************************************MENU ***************************************************
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
 
-        menuInflater.inflate(R.menu.menu_main_noadd, menu)
+
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+
+
 
 
         return true
@@ -137,20 +161,15 @@ class MainActivityKotlin : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
 
-        if (id == R.id.loadData) {
+        if (id == R.id.searchBarLayout) {
 
-            val intentLoadData = Intent()
-            intentLoadData.setClass(this.applicationContext, LoadData::class.java)
-            startActivity(intentLoadData)
+            prefs.searchBarBottom = !prefs.searchBarBottom
 
-        }
-
-
-        if (id == R.id.myteams) {
+        } else {
 
 
             val popDialogBuilder = AlertDialog.Builder(this)
-            val mView = layoutInflater.inflate(R.layout.customdialogfavorites, null)
+            val mView = layoutInflater.inflate(R.layout.customdialogsettings, null)
             //    popDialogBuilder.setIcon(R.mipmap.ic_launcher);
             //    popDialogBuilder.setTitle("Characters for Filter");
 
@@ -160,19 +179,43 @@ class MainActivityKotlin : AppCompatActivity() {
             alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.BLACK))
             alertDialog.show()
 
-            spinnerMlb = mView.findViewById<View>(R.id.spinnerMLB) as Spinner
-            spinnerNfl = mView.findViewById<View>(R.id.spinnerNFL) as Spinner
-            spinnerNhl = mView.findViewById<View>(R.id.spinnerNHL) as Spinner
-            spinnerNba = mView.findViewById<View>(R.id.spinnerNBA) as Spinner
+            spinnerMLB = mView.findViewById<View>(R.id.spinnerMLB) as Spinner
+            spinnerNFL = mView.findViewById<View>(R.id.spinnerNFL) as Spinner
+            spinnerNHL = mView.findViewById<View>(R.id.spinnerNHL) as Spinner
+            spinnerNBA = mView.findViewById<View>(R.id.spinnerNBA) as Spinner
+
+            spinnerMLBAdapter = ItemSpinnerAdapter(applicationContext, resources.getStringArray(R.array.mlbteams))
+            spinnerMLBAdapter!!.notifyDataSetInvalidated()
+            spinnerMLBAdapter!!.notifyDataSetChanged()
+
+            spinnerNFLAdapter = ItemSpinnerAdapter(applicationContext, resources.getStringArray(R.array.nflteams))
+            spinnerNFLAdapter!!.notifyDataSetInvalidated()
+            spinnerNFLAdapter!!.notifyDataSetChanged()
+
+            spinnerNHLAdapter = ItemSpinnerAdapter(applicationContext, resources.getStringArray(R.array.nhlteams))
+            spinnerNHLAdapter!!.notifyDataSetInvalidated()
+            spinnerNHLAdapter!!.notifyDataSetChanged()
+
+            spinnerNBAAdapter = ItemSpinnerAdapter(applicationContext, resources.getStringArray(R.array.nbateams))
+            spinnerNBAAdapter!!.notifyDataSetInvalidated()
+            spinnerNBAAdapter!!.notifyDataSetChanged()
 
 
-            spinnerMlb!!.setSelection(prefs.mlbfav)
-            spinnerNfl!!.setSelection(prefs.nflfav)
-            spinnerNhl!!.setSelection(prefs.nhlfav)
-            spinnerNba!!.setSelection(prefs.nbafav)
+            spinnerMLB!!.adapter = spinnerMLBAdapter
+            spinnerNFL!!.adapter = spinnerNFLAdapter
+            spinnerNHL!!.adapter = spinnerNHLAdapter
+            spinnerNBA!!.adapter = spinnerNBAAdapter
 
 
-            spinnerMlb!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            spinnerMLB!!.setSelection(prefs.mlbfav)
+            spinnerNFL!!.setSelection(prefs.nflfav)
+            spinnerNHL!!.setSelection(prefs.nhlfav)
+            spinnerNBA!!.setSelection(prefs.nbafav)
+
+
+
+            spinnerMLB!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
 
                     if (i != 0) {
@@ -187,7 +230,7 @@ class MainActivityKotlin : AppCompatActivity() {
                 }
             }
 
-            spinnerNfl!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            spinnerNFL!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
 
                     if (i != 0) {
@@ -204,7 +247,7 @@ class MainActivityKotlin : AppCompatActivity() {
                 }
             }
 
-            spinnerNhl!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            spinnerNHL!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
 
                     if (i != 0) {
@@ -221,7 +264,7 @@ class MainActivityKotlin : AppCompatActivity() {
                 }
             }
 
-            spinnerNba!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            spinnerNBA!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
 
                     if (i != 0) {
@@ -239,20 +282,10 @@ class MainActivityKotlin : AppCompatActivity() {
             }
 
 
-        }
-
-        if (id == R.id.settings) {
-
-
-            val popDialogBuilder = AlertDialog.Builder(this)
-            val mView = layoutInflater.inflate(R.layout.customdialogsettings, null)
-            //    popDialogBuilder.setIcon(R.mipmap.ic_launcher);
-            //    popDialogBuilder.setTitle("Characters for Filter");
-
             val clearHistory = mView.findViewById<Button>(R.id.buttonClearHistory)
 
 
-            if (itemsHistory?.size != 0) {
+            if (itemsHistory.size != 0) {
 
                 clearHistory.visibility = View.VISIBLE
                 clearHistory.setText(R.string.ch)
@@ -263,22 +296,14 @@ class MainActivityKotlin : AppCompatActivity() {
             }
 
 
-
-
-
-
-
             clearHistory.setOnClickListener {
 
-                var i = 0
-                itemsHistory!!.forEach { println("The item is $it"); i++ }
-
-                prefs.sih = ""
-                itemsHistory!!.clear()
+                prefs.sportsItemHistory = "[{\"name\":\"search history\"}]"
+                itemsHistory.clear()
                 spinnerHistoryAdapter!!.notifyDataSetChanged()
 
                 val toast = Toast.makeText(this@MainActivityKotlin,
-                        "HISTORY CLEARED",
+                        resources.getText(R.string.chtoast),
                         Toast.LENGTH_SHORT)
 
                 toast.setGravity(Gravity.TOP, 0, 400)
@@ -289,12 +314,27 @@ class MainActivityKotlin : AppCompatActivity() {
             }
 
 
-            val spinnerFilter = mView.findViewById<Spinner>(R.id.spinnerFilterChar)
 
-            spinnerFilter.setSelection(prefs.timerInt - 1)
 
-            spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+
+
+
+
+
+            spinnerFilterCount = mView.findViewById(R.id.spinnerFilterChar)
+
+            spinnerCountFilterAdapter = ItemSpinnerAdapter(applicationContext, resources.getStringArray(R.array.integers))
+            spinnerCountFilterAdapter!!.notifyDataSetInvalidated()
+            spinnerCountFilterAdapter!!.notifyDataSetChanged()
+
+            spinnerFilterCount!!.adapter = spinnerCountFilterAdapter
+            spinnerFilterCount!!.setSelection(prefs.timerInt - 1)
+
+
+            spinnerFilterCount!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+
 
                     if (i >= 0) {
 
@@ -307,54 +347,34 @@ class MainActivityKotlin : AppCompatActivity() {
                 }
             }
 
-            checkBoxAddFree = mView.findViewById(R.id.checkBoxAds)
-            checkBoxAddFree!!.isChecked = prefs.addFree
-
-
-            // Button OK
-            popDialogBuilder.setPositiveButton("Ok") { dialog, _ ->
-                val toastString: String? = if (checkBoxAddFree!!.isChecked) {
-                    spinnerFilter.selectedItem.toString() + " characters for filter" +
-                            "\n(no Ads)"
-                } else {
-                    spinnerFilter.selectedItem.toString() + " seconds auto-enter"
-                }
-
-
-
-                prefs.addFree = checkBoxAddFree!!.isChecked
-
-
-                val toast = Toast.makeText(this@MainActivityKotlin,
-                        toastString,
-                        Toast.LENGTH_SHORT)
-
-                toast.setGravity(Gravity.TOP, 0, 400)
-                centerText(toast.view)
-                toast.show()
-
-
-                dialog.dismiss()
-            }
-
-            popDialogBuilder.setNegativeButton("Cancel") { dialog, which -> dialog.dismiss() }
-
-
-            popDialogBuilder.setView(mView)
-            val alertDialog = popDialogBuilder.create()
-
-            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.BLACK))
-            alertDialog.show()
-
-
-            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE)
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.WHITE)
-
 
         }
 
+
+
         return super.onOptionsItemSelected(item)
     }
+
+
+
+
+
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+
+        val item = menu!!.findItem(R.id.searchBarLayout)
+
+        if ( prefs.searchBarBottom ) {
+            item.title = resources.getString(R.string.sbt)
+        } else {
+            item.title = resources.getString(R.string.sbb)
+        }
+
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    //****************************************MENU ***************************************************
 
 
     private fun centerText(view: View) {
@@ -370,79 +390,83 @@ class MainActivityKotlin : AppCompatActivity() {
 
     private fun loadHistory() {
 
-        /*  try {
-              itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sih, type)
-          } catch (e: Exception) {
-              val dummySportsItem = SportsItem(name = "SEARCH HISTORY", link = "",
-                      seasons = "", type = "", position = "")
-              //  itemsHistory = ArrayList()
-              itemsHistory?.add(dummySportsItem)
-              val jsonHistoryList = Gson().toJson(itemsHistory)
-              prefs.sih = jsonHistoryList
-          } finally {
-              spinnerHistoryAdapter = HistorySpinnerAdapter(applicationContext, itemsHistory)
-              spinnerHistoryAdapter!!.notifyDataSetInvalidated()
-              spinnerHistoryAdapter!!.notifyDataSetChanged()
-          }*/
-
-        spinnerHistory?.visibility = View.VISIBLE
-
-        println("itemsHistory size ${itemsHistory?.size}")
-
-        itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sih, type)
-
-        if (!(prefs.sih).contains("SEARCH HISTORY")) {
-
-            val dummySportsItem = SportsItem(name = "SEARCH HISTORY", link = "",
-                    type = "", position = "", sport = "")
-            //  itemsHistory = ArrayList()
-            itemsHistory?.add(0, dummySportsItem)
-            val jsonHistoryList = Gson().toJson(itemsHistory)
-            prefs.sih = jsonHistoryList
 
 
-        }
+        println("$TAG itemsHistory size ${itemsHistory.size}")
+        println("$TAG sportsItemHistory ---> ${prefs.sportsItemHistory}")
+
+        try {
 
 
 
-        spinnerHistoryAdapter = HistorySpinnerAdapter(applicationContext, itemsHistory)
-        spinnerHistoryAdapter!!.notifyDataSetInvalidated()
-        spinnerHistoryAdapter!!.notifyDataSetChanged()
 
 
-        spinnerHistory!!.adapter = spinnerHistoryAdapter
+            itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sportsItemHistory, type)
 
-        //      if ( userIsInteracting ) {spinnerHistory!!.isSelected = true} else {spinnerHistory!!.isSelected = false}
-        spinnerHistory!!.setSelection(0, true)
+            /* if (!(prefs.sih).contains(resources.getString(R.string.sh))) {
+
+                      val dummySportsItem = SportsItem(name = resources.getString(R.string.sh), link = "",
+                              type = "", position = "", sport = "", DB_ID = "", firstSeason = "",
+                              lastSeason = "", schoolLink = "", schoolOrTeam = "", SCRAPED = false)
+
+                     itemsHistory?.add(0, dummySportsItem)
+                      val jsonHistoryList = Gson().toJson(itemsHistory)
+                      prefs.sih = jsonHistoryList
 
 
-        spinnerHistory!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                  }
 
-                println("MAK onItemSelectedListener $userIsInteracting $position")
-                //    dimBackground()
 
-                val intent: Intent
+          */
+            spinnerHistoryAdapter = HistorySpinnerAdapter(applicationContext, itemsHistory)
+            spinnerHistoryAdapter!!.notifyDataSetInvalidated()
+            spinnerHistoryAdapter!!.notifyDataSetChanged()
 
-                if (userIsInteracting) {
-                    intent = Intent(application.applicationContext, WebView::class.java)
-                    val gson = Gson()
-                    intent.putExtra("sportsItemObject", gson.toJson(itemsHistory!![position]))
-                    intent.putExtra("sentFrom", "HISTORY")
-                    println("MAK Intent ${gson.toJson(itemsHistory!![position])} $userIsInteracting $position")
-                    userIsInteracting = false
-                    startActivity(intent)
+
+            spinnerHistory!!.adapter = spinnerHistoryAdapter
+
+            //      if ( userIsInteracting ) {spinnerHistory!!.isSelected = true} else {spinnerHistory!!.isSelected = false}
+            spinnerHistory!!.setSelection(0, true)
+
+
+            spinnerHistory!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+                    println("$TAG onItemSelectedListener $userIsInteracting $position")
+                    //    dimBackground()
+
+                    val intent: Intent
+
+                    if (userIsInteracting) {
+                        intent = Intent(application.applicationContext, WebView::class.java)
+                        intent.putParcel(parcel = itemsHistory[position])
+                        intent.putExtra("sentFrom", "HISTORY")
+                        userIsInteracting = false
+                        startActivity(intent)
+
+
+                    }
+                }
+
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
 
 
                 }
-            }
-
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
 
             }
+        } catch (e: Exception) {
 
+
+           /* itemsHistory.add(0, SportsItem(name = "search history"))
+           // spinnerHistory?.visibility = View.GONE
+
+            spinnerHistoryAdapter = HistorySpinnerAdapter(applicationContext, itemsHistory)
+            spinnerHistoryAdapter!!.notifyDataSetInvalidated()
+            spinnerHistoryAdapter!!.notifyDataSetChanged()
+
+
+            spinnerHistory!!.adapter = spinnerHistoryAdapter*/
         }
     }
 
@@ -470,12 +494,15 @@ class MainActivityKotlin : AppCompatActivity() {
                         Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 view = inflater.inflate(R.layout.itemlayouthistory, viewGroup, false)
             }
+
+
             val itemFromHistory = itemsHistory!![i]
 
             val txtName = view!!.findViewById<TextView>(R.id.textViewNameHistory)
-            val txtSeasons = view.findViewById<TextView>(R.id.textViewSeasonsHistory)
             val txtType = view.findViewById<TextView>(R.id.textViewTypeHistory)
             val imgView = view.findViewById<ImageView>(R.id.imageViewIconHistory)
+
+
 
 
             txtName.text = itemFromHistory.name
@@ -484,64 +511,82 @@ class MainActivityKotlin : AppCompatActivity() {
                 txtType.visibility = View.GONE
             } else {
                 txtType.visibility = View.VISIBLE
-                txtType.text = "(${itemFromHistory.type})"
+                txtType.text = "as ${itemFromHistory.type}"
             }
 
-         val year: Int
+            val options = BitmapFactory.Options()
+            options.outHeight = 40
+            options.outWidth = 40
+            val bmfb = BitmapFactory.decodeResource(resources, R.drawable.football_icon_history, options)
+            val bmbb = BitmapFactory.decodeResource(resources, R.drawable.baseball_icon_history, options)
+            val bmh = BitmapFactory.decodeResource(resources, R.drawable.hockey_icon_history, options)
+            val bmbkb = BitmapFactory.decodeResource(resources, R.drawable.basketball_icon_history, options)
+            val bmcfb = BitmapFactory.decodeResource(resources, R.drawable.collegefootball_icon_history, options)
+            val bmcbb = BitmapFactory.decodeResource(resources, R.drawable.collegebasketball_icon_history, options)
+            val bms = BitmapFactory.decodeResource(resources, R.drawable.fbreficonhistory, options)
+            val bmsr = BitmapFactory.decodeResource(resources, R.drawable.sricon_history, options)
 
-            year = Calendar.getInstance().get(Calendar.YEAR)
-
-            var careerSpan = ""
 
 
-            if (itemFromHistory.lastSeason == year.toString() && itemFromHistory.firstSeason != "") {
-
-                careerSpan = itemFromHistory.firstSeason + "-"
-
+            if (itemFromHistory.sport == "football") {
+                imgView.setImageBitmap(bmfb)
+            } else if (itemFromHistory.sport == "baseball") {
+                imgView.setImageBitmap(bmbb)
+            } else if (itemFromHistory.sport == "soccer") {
+                imgView.setImageBitmap(bms)
+            } else if (itemFromHistory.sport == "basketball") {
+                imgView.setImageBitmap(bmbkb)
+            } else if (itemFromHistory.sport == "hockey") {
+                imgView.setImageBitmap(bmh)
+            } else if (itemFromHistory.sport == "college_football") {
+                imgView.setImageBitmap(bmcfb)
+            } else if (itemFromHistory.sport == "college_basketball")    {
+                imgView.setImageBitmap(bmcbb)
             } else {
+                imgView.setImageBitmap(bmsr)
+            }
 
-                careerSpan = itemFromHistory.firstSeason + "-" + itemFromHistory.lastSeason
+            return view
+        }
 
+    }
+
+
+    inner class ItemSpinnerAdapter(internal val context: Context, private val items:
+    Array<String>) : BaseAdapter() {
+
+        override fun getCount(): Int {
+            return items.size
+        }
+
+        override fun getItem(i: Int): String? {
+            return items.get(i)
+        }
+
+        override fun getItemId(i: Int): Long {
+            return 0
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View {
+            var view = view
+            if (view == null) {
+                val inflater = context.getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                view = inflater.inflate(R.layout.customspinneritem, viewGroup, false)
             }
 
 
-            println("${ContentValues.TAG} sportsItem careerSpan $careerSpan")
+            val item = items[i]
 
-            try {
-                if ( careerSpan.startsWith("-")) {
-                    careerSpan = careerSpan.substring(1, careerSpan.length)
-                }
-            } catch (e: Exception) {
+            val txtItem = view!!.findViewById<TextView>(R.id.text1)
 
-                careerSpan = ""
-
-            }
-
-
-
-            txtSeasons.text = careerSpan
+            txtItem.text = item
 
 
 
 
-            if (itemFromHistory.sport.contains("football")) {
-                imgView.setImageResource(R.drawable.football_icon_new2)
-            } else if (itemFromHistory.sport.contains("baseball")) {
-                imgView.setImageResource(R.drawable.baseball_icon_new2)
-            } else if (itemFromHistory.sport.contains("soccer")) {
-                imgView.setImageResource(R.drawable.fbreficonp)
-            } else if (itemFromHistory.sport.contains("basketball")) {
-                imgView.setImageResource(R.drawable.basketball_icon_new2)
-            } else if (itemFromHistory.sport.contains("hockey")) {
-                imgView.setImageResource(R.drawable.hockey_icon_new2)
-            } else if (itemFromHistory.sport.contains("college_football")) {
-                imgView.setImageResource(R.drawable.collegefootball_icon_new2)
-            } else if (itemFromHistory.sport.contains("college_basketball")) {
-                imgView.setImageResource(R.drawable.collegebasketball_icon_new2)
-            } else if (itemFromHistory.name.contains("SEARCH HISTORY")) {
-                imgView.setImageResource(R.drawable.sricon)
-                //  view.visibility = View.GONE
-            }
+
 
             return view
         }
@@ -551,19 +596,31 @@ class MainActivityKotlin : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
 
+
+
+
+
+
         if (!loaded) {
             loaded = true
         } else {
-            itemsHistory?.clear()
+            itemsHistory.clear()
             loadHistory()
+            spinnerHistory?.visibility = View.VISIBLE
 
             userIsInteracting = false
 
-            println("ON RESUME")
+            println("$TAG ON RESUME")
 
         }
 
+
+
     }
+
+
+
+
 
     override fun onUserInteraction() {
         super.onUserInteraction()
@@ -571,10 +628,12 @@ class MainActivityKotlin : AppCompatActivity() {
     }
 
 
-    companion object {
 
-        private const val TAG = "MAINACTIVITY"
-    }
+
+
+
+
+
 
 
 }

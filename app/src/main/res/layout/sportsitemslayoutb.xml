@@ -27,28 +27,29 @@
             android:enabled = "false"
             android:gravity = "center_horizontal"
             android:hint = "@string/edittext_hint"
+
             android:inputType = "text|textNoSuggestions|textPersonName"
-            android:padding = "10dp"
+            android:padding = "12dp"
             android:popupBackground = "#83ffffff"
             android:textColor = "@android:color/black"
             android:textColorHint = "@android:color/darker_gray"
             android:textSize = "16sp"
+            app:layout_constraintBottom_toBottomOf = "parent"
             app:layout_constraintLeft_toLeftOf = "parent"
-            app:layout_constraintRight_toRightOf = "parent"
-            app:layout_constraintTop_toTopOf = "parent" />
+            app:layout_constraintRight_toRightOf = "parent" />
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sportsItemRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal|end"
             android:focusableInTouchMode="false"
             android:foregroundGravity="center_horizontal"
-            android:paddingBottom="80dp"
+            android:paddingTop="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/searchText"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchText">
+            app:layout_constraintRight_toRightOf="parent">
 
         </android.support.v7.widget.RecyclerView>
 

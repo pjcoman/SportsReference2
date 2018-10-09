@@ -13,11 +13,11 @@ internal class PagerAdapter(fm: FragmentManager, private val mNumOfTabs: Int) : 
 
     override fun getItem(position: Int): Fragment? {
 
-        when (position) {
-            0 -> return NorthAmericaFragment()
-            1 -> return WorldFragment()
+        return when (position) {
+            0 -> NorthAmericaFragment()
+            1 -> WorldFragment()
 
-            else -> return null
+            else -> null
         }
     }
 

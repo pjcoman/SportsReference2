@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -43,7 +42,7 @@ class WebView : AppCompatActivity() {
             window.navigationBarColor = Color.BLACK
         }
 
-        view = findViewById<View>(R.id.webview1)
+        view = findViewById(R.id.webview1)
 
 
         val dm = DisplayMetrics()
@@ -84,35 +83,28 @@ class WebView : AppCompatActivity() {
         }// getWindow().setAttributes(layoutParams);
         // mWindowParams.gravity = Gravity.TOP;
 
-        println("$TAG pre GSON sIO --> " + intent.extras.getString("sportItemObject"))
+  //      println("$TAG pre GSON sIO --> " + intent.extras.getString("sportItemObject"))
 
-        val programIntent: String = intent.extras.getString("sentFrom", "")
+        var programIntent: String = intent!!.extras!!.getString("sentFrom", "")
 
-        var sportsItemObject: SportsItem?
-
-        try {
-            sportsItemObject = Gson().fromJson(intent.extras.getString("sportsItemObject"),
-                           SportsItem::class.java)
-        } catch (e: Exception) {
-            sportsItemObject = null
-        }
-
-        println("$TAG programIntent --> $programIntent")
-        println("$TAG post GSON sIO --> ${sportsItemObject.toString()}")
+        val sportsItemObject: SportsItem? = intent!!.getParcel()
 
 
 
+        println("$TAG sIO --> " + sportsItemObject.toString())
 
 
         var webAddress = when (programIntent) {
 
-            "ACTIVITY" -> intent.extras.getString("linkSearchText")
+            "ACTIVITY" -> intent!!.extras!!.getString("linkSearchText")
 
-            "FAVORITE" -> intent.extras.getString("link")
+            "FAVORITE" -> intent!!.extras!!.getString("link")
 
             "HISTORY" -> sportsItemObject?.link
 
             "ADAPTER" -> sportsItemObject?.link
+
+            "ADAPTERLONGCLICK" -> sportsItemObject?.schoolLink
 
             else -> "http://www.sports-reference.com"
         }
@@ -129,18 +121,18 @@ class WebView : AppCompatActivity() {
         if ( !webAddress!!.contains("http") ) {
 
             if (sportsItemObject!!.sport.contains("college") || webAddress.contains("cbb")) {
-                webAddress = "https://www.sports-reference.com" + webAddress
+                webAddress = "https://www.sports-reference.com$webAddress"
             } else if (sportsItemObject.sport == "baseball") {
-                webAddress = "https://baseball-reference.com" + webAddress
+                webAddress = "https://baseball-reference.com$webAddress"
             } else if (sportsItemObject.sport == "basketball") {
-                webAddress = "https://basketball-reference.com" + webAddress
+                webAddress = "https://basketball-reference.com$webAddress"
             } else if (sportsItemObject.sport == "hockey") {
-                webAddress = "https://hockey-reference.com" + webAddress
+                webAddress = "https://hockey-reference.com$webAddress"
             } else if (sportsItemObject.sport == "football") {
-                webAddress = "https://pro-football-reference.com" + webAddress
+                webAddress = "https://pro-football-reference.com$webAddress"
             } else if (sportsItemObject.sport.contains("soccer") || sportsItemObject.link.contains
                     ("squads")) {
-                webAddress = "https://fbref.com" + webAddress
+                webAddress = "https://fbref.com$webAddress"
             }
         }
 
@@ -160,13 +152,16 @@ class WebView : AppCompatActivity() {
 
 
 
-        Log.d("WEBVIEWKT", "url to load --> " + webAddress)
+        println("$TAG url to load --> $webAddress")
 
 
 
 
-        customTabsIntent.launchUrl(this, Uri.parse(webAddress))
-        customTabsOpened = true
+        try {
+            customTabsIntent.launchUrl(this, Uri.parse(webAddress))
+            customTabsOpened = true
+        } catch (e: Exception) {
+        }
 
 
         /*     webView = findViewById<View>(R.id.webview1) as android.webkit.WebView
@@ -223,38 +218,35 @@ class WebView : AppCompatActivity() {
         itemsHistory = ArrayList()
 
         try {
-            itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sih, type)
+            itemsHistory = Gson().fromJson<java.util.ArrayList<SportsItem>>(prefs.sportsItemHistory, type)
         } catch (e: Exception) {
         }
 
-        println("WEBVIEWKT itemsHistory Json string --> ${prefs.sih}")
-        println("WEBVIEWKT item to add to itemsHistory ----> $o")
-        println("WEBVIEWKT itemsHistory.size --> ${itemsHistory.size}")
+       /* println("$TAG itemsHistory Json string --> ${prefs.sih}")
+        println("$TAG item to add to itemsHistory ----> $o")
+        println("$TAG itemsHistory.size --> ${itemsHistory.size}")
+*/
+        if (!prefs.sportsItemHistory.contains(o.link)) {
+   //
 
-        if (prefs.sih.contains(o.link)) {
-            println("WEBVIEWKT o in itemsHistory")
-        } else {
+                itemsHistory.add(1, o)
 
             if (itemsHistory.size > 15) {
-                itemsHistory.removeAt(15)
-                itemsHistory.add(1, o)
 
-            } else if (itemsHistory.size > 0) {
-                itemsHistory.add(1, o)
-            } else {
-                itemsHistory.add(0, o)
+                itemsHistory.removeAt(15)
+
             }
 
         }
 
 
         val jsonHistoryList = Gson().toJson(itemsHistory)
-        prefs.sih = jsonHistoryList
+        prefs.sportsItemHistory = jsonHistoryList
 
 
 
-        println("WEBVIEWKT itemsHistory.size --> ${itemsHistory.size}")
-        println("WEBVIEWKT jsonHistoryList ---> ${prefs.sih}")
+   //     println("$TAG itemsHistory.size --> ${itemsHistory.size}")
+   //     println("$TAG jsonHistoryList ---> ${prefs.sih}")
 
         //   mainActivityKotlin.onResume()
     }
@@ -318,10 +310,7 @@ class WebView : AppCompatActivity() {
     }
 
 
-    companion object {
 
-        private const val TAG = "WEBVIEW"
-    }
 
 
 }

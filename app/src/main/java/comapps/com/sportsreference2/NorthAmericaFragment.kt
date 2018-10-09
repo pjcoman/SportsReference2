@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -27,6 +27,7 @@ class NorthAmericaFragment : Fragment() {
 
 
     private var checkBoxInstructions: CheckBox? = null
+    private var textViewI: TextView? = null
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -55,10 +56,8 @@ class NorthAmericaFragment : Fragment() {
         //   View testbutton = v.findViewById(R.id.button7);
 
 
+        textViewI = v.findViewById(R.id.textViewI)
         checkBoxInstructions = v.findViewById(R.id.checkBoxInstructions)
-
-        val relativeLayoutI = v.findViewById<View>(R.id.relativeLayoutInstructions)
-
 
         val mlbTeamLinksStringArray = resources.getStringArray(R.array.mlbteamlinks)
         val nflTeamLinksStringArray = resources.getStringArray(R.array.nflteamlinks)
@@ -98,7 +97,7 @@ class NorthAmericaFragment : Fragment() {
             Log.i(TAG, "LONG CLICK")
 
 
-            if (prefs.mlbfav === 0) {
+            if (prefs.mlbfav == 0) {
                 val toast = Toast.makeText(activity,
                         "Set favorite for long\n click in settings.",
                         Toast.LENGTH_SHORT)
@@ -139,7 +138,7 @@ class NorthAmericaFragment : Fragment() {
             Log.i(TAG, "LONG CLICK")
 
 
-            if (prefs.nflfav === 0) {
+            if (prefs.nflfav == 0) {
                 val toast = Toast.makeText(activity,
                         "Set favorite for long\n click in settings.",
                         Toast.LENGTH_SHORT)
@@ -180,7 +179,7 @@ class NorthAmericaFragment : Fragment() {
         nhlbutton.setOnLongClickListener { view ->
             Log.i(TAG, "LONG CLICK")
 
-            if (prefs.nhlfav === 0) {
+            if (prefs.nhlfav == 0) {
                 val toast = Toast.makeText(activity,
                         "Set favorite for long\n click in settings.",
                         Toast.LENGTH_SHORT)
@@ -220,7 +219,7 @@ class NorthAmericaFragment : Fragment() {
         nbabutton.setOnLongClickListener { view ->
             Log.i(TAG, "LONG CLICK")
 
-            if (prefs.nbafav === 0) {
+            if (prefs.nbafav == 0) {
                 val toast = Toast.makeText(activity,
                         "Set favorite for long\n click in settings.",
                         Toast.LENGTH_SHORT)
@@ -298,13 +297,10 @@ class NorthAmericaFragment : Fragment() {
 
 
 
-        if (rNumber > 8 && prefs.showInstructions) {
-            assert(relativeLayoutI != null)
+        if (rNumber < 9 && prefs.showInstructions) {
+            textViewI!!.visibility = View.GONE
+            checkBoxInstructions!!.visibility = View.GONE
 
-
-        } else {
-
-            relativeLayoutI!!.visibility = View.GONE
 
         }
 
@@ -315,13 +311,6 @@ class NorthAmericaFragment : Fragment() {
 
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
 
     override fun onDetach() {
         super.onDetach()
@@ -371,12 +360,6 @@ class NorthAmericaFragment : Fragment() {
             return fragment
         }
 
-        private val string: String
-            get() {
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-                val currentDateandTime = sdf.format(Date())
-                Log.e(TAG, "Time ----> $currentDateandTime")
-                return currentDateandTime
-            }
+
     }
 }// Required empty public constructor

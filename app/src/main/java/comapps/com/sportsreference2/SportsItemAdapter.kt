@@ -1,23 +1,19 @@
 package comapps.com.sportsreference2
 
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.DocumentReference
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.itemlayoutrecycler_constraint.view.*
 import java.util.*
+
 
 /**
  * Created by me on 2/26/2018.
  */
-class SportsItemAdapter(private val listSportsItems: MutableList<SportsItem>, applicationContext: Context, docRef: DocumentReference) :
+class SportsItemAdapter(private val listSportsItems: MutableList<SportsItem>) :
         RecyclerView.Adapter<SportsItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,19 +26,44 @@ class SportsItemAdapter(private val listSportsItems: MutableList<SportsItem>, ap
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindForecast(listSportsItems.get(position))
+        holder.bindForecast(listSportsItems[position])
+
+
 
         holder.itemView.setOnClickListener {
 
 
             val intent = Intent(it.context, WebView::class.java)
-            val gson = Gson()
-            intent.putExtra("sportsItemObject", gson.toJson(listSportsItems[position]))
+            intent.putParcel(parcel = listSportsItems[position])
             intent.putExtra("sentFrom", "ADAPTER")
-            Log.d("GSON", gson.toJson(listSportsItems[position]))
-            //    intent.putExtra("whichactivity", "baseball")
             startActivity(it.context, intent, null)
         }
+
+
+
+        var schoolLink = listSportsItems[position].schoolLink
+
+
+        if ( !schoolLink.isNullOrEmpty() ) {
+
+            holder.itemView.setOnLongClickListener {
+
+
+                val intent = Intent(it.context, WebView::class.java)
+                intent.putParcel(parcel = listSportsItems[position])
+                intent.putExtra("sentFrom", "ADAPTERLONGCLICK")
+                startActivity(it.context, intent, null)
+                true
+
+
+            }
+
+
+        }
+
+
+
+
     }
 
 
@@ -55,109 +76,146 @@ class SportsItemAdapter(private val listSportsItems: MutableList<SportsItem>, ap
         fun bindForecast(sportsItem: SportsItem) {
             with(sportsItem) {
 
+                //   println("$TAG SIA adapter sportsItem: $this")
+
                 itemView.textViewName.text = deAccent(sportsItem.name)
+                val schoolOrTeamText = this.schoolOrTeam.replace("amp;", "").trim()
 
-                /* if ( sportsItem.sport.contains("college")) {
-                     itemView.textViewSchoolOrTeam.visibility = View.VISIBLE
-                 }
- */
-                if (sportsItem.sport == "basketball" || sportsItem.sport == "football" ||
-                        sportsItem.sport == "hockey") {
+                //***********************************************************************************************
 
+                val year: Int = Calendar.getInstance().get(Calendar.YEAR)
+                var careerSpan = ""
+
+     ///           println("$TAG SIA adapter sportsItem: $this")
+
+
+                if (this.firstSeason == "") {
+
+
+                    itemView.textViewSeasons.visibility = View.GONE
+
+
+                } else {
+
+                    itemView.textViewSeasons.visibility = View.VISIBLE
+
+                    if (this.firstSeason == this.lastSeason) {
+                        itemView.textViewSeasons.text = this.lastSeason
+                    } else {
+                        itemView.textViewSeasons.text = "${this.firstSeason}-${this.lastSeason}"
+
+                    }
+
+                    if ( sport == "basketball" ) {
+
+                        itemView.textViewSeasons.text = "debut NBA ${this.firstSeason}"
+
+                    }
+
+
+                }
+
+
+                //****************************************************************************************
+
+
+                val positionText = (this.position).replace("Position:|Positions:", "").trim()
+
+                itemView.textViewPosition.text = positionText
+
+                itemView.textViewPosition.visibility = View.VISIBLE
+                if (itemView.textViewPosition.text == "") {
+                    itemView.textViewPosition.visibility = View.GONE
+                }
+
+                //*************************************************************************************************
+
+
+
+
+                if ( schoolOrTeamText == "" || sport == "baseball") {
+
+          //          println("$TAG sport schoolOrTeam $sport $schoolOrTeam")
                     itemView.textViewSchoolOrTeam.visibility = View.GONE
 
                 } else {
 
-                    if (sportsItem.schoolOrTeam.contains("High") && sportsItem.sport.contains
-                            ("college")) {
-                        itemView.textViewSchoolOrTeam.text = sportsItem.schoolOrTeam
+                    if (this.schoolLink.contains("https")) {
+
+
+                        val longClickString = schoolOrTeamText + "\n" + "long click for college stats"
+
+
+                        itemView.textViewSchoolOrTeam.text = longClickString.replace(
+                                "|",
+                                ""
+                        )
+
+
+                        itemView.textViewSchoolOrTeam.visibility = View.VISIBLE
+
                     } else {
 
-                        if (sportsItem.schoolOrTeam.contains("Schools:")) {
-                            itemView.textViewSchoolOrTeam.text = sportsItem.schoolOrTeam
-                                    .removePrefix("Schools: ")
-                        } else if (sportsItem.schoolOrTeam.contains("School:")) {
-                            itemView.textViewSchoolOrTeam.text = sportsItem.schoolOrTeam.removePrefix("School: ")
+                        if (this.sport.contains("college")) {
+
+
+
+                            val schoolTextForCollege = schoolOrTeamText.split(':')
+
+                            try {
+                                if (schoolTextForCollege.size > 1) {
+                                    itemView.textViewSchoolOrTeam.text = schoolTextForCollege[1]
+                                }
+                            } catch (e: Exception) {
+                            }
+
+                            try {
+                                if (schoolTextForCollege.size > 2) {
+                                    itemView.textViewSchoolOrTeam.text = schoolTextForCollege[2]
+                                }
+                            } catch (e: Exception) {
+                            }
+
+
+                        } else {
+
+                            itemView.textViewSchoolOrTeam.text = schoolOrTeamText.replace("|", "\n")
+                                    .replace("Schools:|School:", "").trim()
+                            itemView.textViewSchoolOrTeam.visibility = View.VISIBLE
 
 
                         }
 
                     }
-
-
                 }
 
-                position = (sportsItem.position).replace("Positions:", "").trim()
+                //********************************************************************************
+
+                if (this.type != "player") {
+                    itemView.textViewType.text = this.type
+                    itemView.textViewType.visibility = View.VISIBLE
+                    itemView.textViewPosition.visibility = View.GONE
 
 
-                position = (sportsItem.position).replace("Position:", "").trim()
-
-                itemView.textViewType.visibility = View.VISIBLE
-
-
-                when (sportsItem.type) {
-                    "team", "school", "null" -> itemView.textViewType.text = null
-                    "player" -> itemView.textViewType.text = position
-                    "" -> itemView.textViewType.text = position
-                    "manager", "coach", "GM" -> {
-                        itemView.textViewType.text = sportsItem.type
-                        itemView.textViewSeasons.text = ""
-                    }
-                    else -> { // Note the block
-                        itemView.textViewType.text = null
+                    if (this.sport.contains("college") && this.type == "coach" && schoolOrTeamText != "") {
+                        itemView.textViewSchoolOrTeam.text = "last coached " + schoolOrTeamText
+                        itemView.textViewSchoolOrTeam.visibility = View.VISIBLE
                         itemView.textViewType.visibility = View.GONE
+                    } else {
+                        itemView.textViewSchoolOrTeam.visibility = View.GONE
                     }
-                }
 
-                /* if (itemView.textViewType.text == null) itemView.textViewType.text = ""
-
-
- */              if (sportsItem.sport == "baseball" && sportsItem.type == "player") {
-
-                val year: Int
-
-                year = Calendar.getInstance().get(Calendar.YEAR)
-
-                var careerSpan = ""
-
-
-                if (sportsItem.lastSeason == year.toString() && sportsItem.firstSeason != "") {
-
-                    careerSpan = sportsItem.firstSeason + "-"
 
                 } else {
+                    itemView.textViewType.visibility = View.GONE
 
-                    careerSpan = sportsItem.firstSeason + "-" + sportsItem.lastSeason
+                    if (this.sport.contains("college") && schoolOrTeamText != "") {
+                        itemView.textViewSchoolOrTeam.text = schoolOrTeamText
+                        itemView.textViewSchoolOrTeam.visibility = View.VISIBLE
 
-                }
 
-
-                println("$TAG sportsItem careerSpan $careerSpan")
-
-                try {
-                    if ( careerSpan.startsWith("-")) {
-                        careerSpan = careerSpan.substring(1, careerSpan.length)
                     }
-                } catch (e: Exception) {
-
-                    careerSpan = ""
-
                 }
-
-                if ( careerSpan.length < 4 ) {
-                    itemView.textViewSeasons.visibility = View.GONE
-                } else {
-                    itemView.textViewSeasons.visibility = View.VISIBLE
-
-                }
-
-
-
-                itemView.textViewSeasons.text = careerSpan
-
-
-
-            }
 
 
             }

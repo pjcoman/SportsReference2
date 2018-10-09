@@ -2,25 +2,18 @@
 <resources>
 
     <string
-        name="edittext_hint">first and last for college</string>
+        name="edittext_hint">first name</string>
     <string
         name="edittext_hint2">press for clear</string>
     <string
-        name="edittext_hint3">name/country/club or year i.e 2014 </string>
+        name="edittext_hint3">player/league/season (i.e. 2016)</string>
 
     <string name="app_name">Sports Reference</string>
+
     <string name="name">Name</string>
-    <string name="seasons">1111–1111</string>
     <string name="type">type</string>
-    <string name="swipe_instructions">Long press for favorites and timer in settings.</string>
-    <string name="don_t_show">don\'t show</string>
+    <string name="instructions">Long press for favorites and timer in settings.</string>
     <string name="show">show instructions</string>
-    <string name="mlb">Baseball</string>
-    <string name="ncaa_basketball">ncaa basketball</string>
-    <string name="ncaa_football">ncaa football</string>
-    <string name="nba">Basketball</string>
-    <string name="nfl">Football</string>
-    <string name="nhl">Hockey</string>
 
     <string-array name="sports">
         <item>baseball</item>
@@ -30,27 +23,10 @@
         <item>college_football</item>
         <item>college_basketball</item>
         <item>soccer</item>
-        <item>soccer_clubs</item>
-        <item>soccer_leagues</item>
-        <item>soccer_wc</item>
-    </string-array>
 
-    <string-array name="sportsSpinner">
-        <item>select sport</item>
-        <item>baseball</item>
-        <item>football</item>
-        <item>hockey</item>
-        <item>basketball</item>
-        <item>college_football</item>
-        <item>college_basketball</item>
-        <item>soccer</item>
-        <item>soccer_clubs</item>
-        <item>soccer_leagues</item>
-        <item>soccer_wc</item>
     </string-array>
 
     <string-array name="integers">
-        <item>FILTER</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -367,33 +343,22 @@
 </string-array>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="first_letter_last_name">1st Name + \" \" +\n1st Letter\nLast Name</string>
     <string name="timer">Seconds till Auto-Enter</string>
-    <string name="first_name_first_blank">1st Name + \" \"</string>
 
-    <string name="history">History</string>
-    <string name="characters_for_filter">Characters for filter</string>
-    <string name="first_name_first_blank2">First Name (first blank)</string>
-    <string name="name_blank_first_letter_last_name">Name (blank) First Letter Last Name</string>
-    <string name="ad_free_javascript_disabled">Ad Free\n(javascript disabled)</string>
-    <string name="button">Button</string>
-    <string name="rounded_mask">rounded mask</string>
-    <string name="home">Home</string>
-    <string name="icon">icon</string>
+    <string name="chtoast">history cleared</string>
     <string name="ch">CLEAR HISTORY</string>
-    <string name="mytems">My Teams</string>
-    <string name="add">Add</string>
-    <string name="load">Load</string>
-    <string name="web_address_after_last">web address ( after last / )</string>
-    <string name="select_sport">select sport</string>
-    <string name="total_links">links</string>
+    <string name="settings">settings</string>
+    <string name="sbt">search bar TOP</string>
+    <string name="sbb">search bar BOTTOM</string>
 
-    <string name="_1999_2000">1999–2000</string>
-    <string name="sportbackground">sportbackground</string>
-    <string name="percentLoad">0%</string>
-    <string name="halftransparent">halftransparent</string>
+    <string name="my_teams">my teams</string>
+    <string name="bbicon">bbicon</string>
+    <string name="fbicon">fbicon</string>
+    <string name="hicon">hicon</string>
+    <string name="bkbicon">bkbicon</string>
+    <string name="cfbicon">cfbicon</string>
+    <string name="cbbicon">cbbicon</string>
+    <string name="ftbicon">ftbicon</string>
 
 
 </resources>

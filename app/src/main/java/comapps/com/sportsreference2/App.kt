@@ -1,6 +1,6 @@
 package comapps.com.sportsreference2
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Logger
 
@@ -14,7 +14,7 @@ val prefs: Prefs by lazy {
 }
 
 
-class App : Application() {
+class App : MultiDexApplication() {
     companion object {
         var prefs: Prefs? = null
 
@@ -27,4 +27,7 @@ class App : Application() {
 
         super.onCreate()
     }
+
+
+
 }

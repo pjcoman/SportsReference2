@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="yellow">#f2e644</color>
-    <color name="blackhalftransparent">#c8080000</color>
+    <color name="blackhalftransparent">#a0525050</color>
+    <color name = "blackhalftransparent2">#cc080000</color>
 
 </resources>

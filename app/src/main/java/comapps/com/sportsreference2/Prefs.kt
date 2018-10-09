@@ -9,43 +9,53 @@ import android.content.SharedPreferences
 class Prefs(context: Context) {
     private val PREFS_FILENAME = "comapps.com.sportsreference2.prefs"
     private val SPORTS_ITEM_HISTORY = "sih"
-    private val BB_ITEMS = "bbi"
-    private val FB_ITEMS = "fbi"
-    private val H_ITEMS = "hi"
-    private val BKB_ITEMS = "bkbi"
-    private val CFB_ITEMS = "cbkbi"
-    private val CBKB_ITEMS = "cfbi"
+
+
+    private val HOCKEYITEMS = "hockey_items"
+    private val BASEBALLITEMS = "baseball_items"
+    private val FOOTBALLITEMS = "football_items"
+    private val BASKETBALLITEMS = "basketball_items"
+    private val SOCCERITEMS = "soccer_items"
+    private val COLLEGE_BASKETBALLITEMS = "cbb_items"
+    private val COLLEGE_FOOTBALLITEMS = "cfb_items"
+
     private val MLBFAVSPIN = "mlb_spin"
     private val NHLFAVSPIN = "nhl_spin"
     private val NBAFAVSPIN = "nba_spin"
     private val NFLFAVSPIN = "nfl_spin"
     private val TIMER_INT = "timer_integer"
-    private val ADD_FREE = "add_free"
     private val SHOW_INSTRUCTIONS = "show_instructions"
+    private val ON_BOTTOM = "on_bottom"
 
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
 
-    var sih: String
-        get() = prefs.getString(SPORTS_ITEM_HISTORY, "")
+    var sportsItemHistory: String
+        get() = prefs.getString(SPORTS_ITEM_HISTORY, "[{\"name\":\"search history\"}]")
         set(value) = prefs.edit().putString(SPORTS_ITEM_HISTORY, value).apply()
-    var bbi: String
-        get() = prefs.getString(BB_ITEMS, "")
-        set(value) = prefs.edit().putString(BB_ITEMS, value).apply()
-    var fbi: String
-        get() = prefs.getString(FB_ITEMS, "")
-        set(value) = prefs.edit().putString(FB_ITEMS, value).apply()
-    var hi: String
-        get() = prefs.getString(H_ITEMS, "")
-        set(value) = prefs.edit().putString(H_ITEMS, value).apply()
-    var bkbi: String
-        get() = prefs.getString(BKB_ITEMS, "")
-        set(value) = prefs.edit().putString(BKB_ITEMS, value).apply()
-    var cfbi: String
-        get() = prefs.getString(CFB_ITEMS, "")
-        set(value) = prefs.edit().putString(CFB_ITEMS, value).apply()
-    var cbkbi: String
-        get() = prefs.getString(CBKB_ITEMS, "")
-        set(value) = prefs.edit().putString(CBKB_ITEMS, value).apply()
+
+
+    var hockeyItems: String
+        get() = prefs.getString(HOCKEYITEMS, "")
+        set(value) = prefs.edit().putString(HOCKEYITEMS, value).apply()
+    var baseballItems: String
+        get() = prefs.getString(BASEBALLITEMS, "")
+        set(value) = prefs.edit().putString(BASEBALLITEMS, value).apply()
+    var footballItems: String
+        get() = prefs.getString(FOOTBALLITEMS, "")
+        set(value) = prefs.edit().putString(FOOTBALLITEMS, value).apply()
+    var basketballItems: String
+        get() = prefs.getString(BASKETBALLITEMS, "")
+        set(value) = prefs.edit().putString(BASKETBALLITEMS, value).apply()
+    var soccerItems: String
+        get() = prefs.getString(SOCCERITEMS, "")
+        set(value) = prefs.edit().putString(SOCCERITEMS, value).apply()
+    var cbbItems: String
+        get() = prefs.getString(COLLEGE_BASKETBALLITEMS, "")
+        set(value) = prefs.edit().putString(COLLEGE_BASKETBALLITEMS, value).apply()
+    var cfbItems: String
+        get() = prefs.getString(COLLEGE_FOOTBALLITEMS, "")
+        set(value) = prefs.edit().putString(COLLEGE_FOOTBALLITEMS, value).apply()
+
 
     var mlbfav: Int
         get() = prefs.getInt(MLBFAVSPIN, 0)
@@ -67,11 +77,11 @@ class Prefs(context: Context) {
         get() = prefs.getInt(TIMER_INT, 4)
         set(value) = prefs.edit().putInt(TIMER_INT, value).apply()
 
-    var addFree: Boolean
-        get() = prefs.getBoolean(ADD_FREE, false)
-        set(value) = prefs.edit().putBoolean(ADD_FREE, value).apply()
-
     var showInstructions: Boolean
         get() = prefs.getBoolean(SHOW_INSTRUCTIONS, true)
         set(value) = prefs.edit().putBoolean(SHOW_INSTRUCTIONS, value).apply()
+
+    var searchBarBottom: Boolean
+        get() = prefs.getBoolean(ON_BOTTOM, true)
+        set(value) = prefs.edit().putBoolean(ON_BOTTOM, value).apply()
 }
